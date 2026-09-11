@@ -1,0 +1,521 @@
+{
+  "generatedAt": "2026-09-11T06:48:44.642Z",
+  "chapterCount": 20,
+  "sketchCount": 42,
+  "chapters": [
+    {
+      "id": "01-arduino-dasar",
+      "number": "01",
+      "title": "Arduino Dasar",
+      "category": "Pemula",
+      "description": "Materi praktik Arduino Dasar.",
+      "readme": "",
+      "image": "/assets/01-arduino-dasar/arduino_dasar.jpg",
+      "sketches": [
+        {
+          "id": "01-arduino-dasar-01-blink-led-01-blink-led-ino",
+          "title": "Blink LED",
+          "filename": "01_Blink_LED.ino",
+          "code": "const int LED = LED_BUILTIN;\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(LED, HIGH);\r\n  delay(1000);\r\n  digitalWrite(LED, LOW);\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/01-arduino-dasar-01-blink-led-01-blink-led-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "02-servo-sg90",
+      "number": "02",
+      "title": "Servo SG90",
+      "category": "Pemula",
+      "description": "Tidak perlu download library tambahan. `Servo.h` sudah termasuk dalam Arduino AVR core.",
+      "readme": "# Servo SG90\r\n\r\n## Library\r\n\r\nTidak perlu download library tambahan. `Servo.h` sudah termasuk dalam Arduino AVR core.\r\n\r\n## Koneksi dasar\r\n\r\n- Kabel cokelat/hitam: GND\r\n- Kabel merah: 5V\r\n- Kabel oranye/kuning: pin sinyal, contoh pin 9\r\n\r\nUntuk proyek gabungan, lihat folder `19_Projek_Gabungan`.",
+      "image": "/assets/02-servo-sg90/servo_sg90.jpg",
+      "sketches": [
+        {
+          "id": "02-servo-sg90-01-sudut-servo-01-sudut-servo-ino",
+          "title": "Sudut Servo",
+          "filename": "01_Sudut_Servo.ino",
+          "code": "#include <Servo.h>\r\n\r\nServo servo;\r\n\r\nvoid setup() {\r\n  servo.attach(9);\r\n  servo.write(0);\r\n  delay(1000);\r\n}\r\n\r\nvoid loop() {\r\n  servo.write(0);\r\n  delay(1000);\r\n  servo.write(90);\r\n  delay(1000);\r\n  servo.write(180);\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/02-servo-sg90-01-sudut-servo-01-sudut-servo-ino.ino"
+        },
+        {
+          "id": "02-servo-sg90-02-sapu-bolak-balik-02-sapu-bolak-balik-ino",
+          "title": "Sapu Bolak Balik",
+          "filename": "02_Sapu_Bolak_Balik.ino",
+          "code": "#include <Servo.h>\r\n\r\nServo servo;\r\n\r\nvoid setup() {\r\n  servo.attach(9);\r\n}\r\n\r\nvoid loop() {\r\n  for (int sudut = 0; sudut <= 180; sudut++) {\r\n    servo.write(sudut);\r\n    delay(15);\r\n  }\r\n\r\n  for (int sudut = 180; sudut >= 0; sudut--) {\r\n    servo.write(sudut);\r\n    delay(15);\r\n  }\r\n}\r\n",
+          "path": "/assets/sketches/02-servo-sg90-02-sapu-bolak-balik-02-sapu-bolak-balik-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "03-lcd-1602-i2c",
+      "number": "03",
+      "title": "LCD 1602 I2C",
+      "category": "Pemula",
+      "description": "- Nama: `LiquidCrystal I2C`",
+      "readme": "# LCD 1602 I2C\r\n\r\n## Library\r\n\r\n- Nama: `LiquidCrystal I2C`\r\n- Arduino IDE: **Library Manager** -> cari `LiquidCrystal I2C` -> pilih library yang menyediakan `LiquidCrystal_I2C.h`\r\n- Sumber: https://github.com/johnrickman/LiquidCrystal_I2C\r\n\r\nJika library tersebut tidak cocok, gunakan library lain yang tetap menyediakan header `LiquidCrystal_I2C.h`.\r\n\r\n## Koneksi Arduino Uno\r\n\r\n| LCD I2C | Arduino Uno |\r\n|---|---|\r\n| VCC | 5V |\r\n| GND | GND |\r\n| SDA | A4 |\r\n| SCL | A5 |\r\n\r\nAlamat yang umum adalah `0x27`. Jika tidak tampil, coba `0x3F` pada kode.# LCD 1602 I2C\r\n\r\nKoneksi umum Arduino Uno:\r\n\r\n| LCD I2C | Arduino Uno |\r\n|---|---|\r\n| VCC | 5V |\r\n| GND | GND |\r\n| SDA | A4 |\r\n| SCL | A5 |\r\n\r\nJika alamat `0x27` tidak bekerja, coba `0x3F`. Pasang library `LiquidCrystal_I2C` dari Library Manager Arduino IDE.\r\n",
+      "image": "/assets/03-lcd-1602-i2c/03_lcd_1602_i2c-referensi.webp",
+      "sketches": [
+        {
+          "id": "03-lcd-1602-i2c-01-selamat-datang-01-selamat-datang-ino",
+          "title": "Selamat Datang",
+          "filename": "01_Selamat_Datang.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  lcd.init();\r\n  lcd.backlight();\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Selamat Datang\");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(\"Belajar Arduino\");\r\n}\r\n\r\nvoid loop() {\r\n}\r\n",
+          "path": "/assets/sketches/03-lcd-1602-i2c-01-selamat-datang-01-selamat-datang-ino.ino"
+        },
+        {
+          "id": "03-lcd-1602-i2c-02-running-text-02-running-text-ino",
+          "title": "Running Text",
+          "filename": "02_Running_Text.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nString pesan = \"  BELAJAR ARDUINO  \";\r\n\r\nvoid setup() {\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  for (int posisi = 16; posisi > -pesan.length(); posisi--) {\r\n    lcd.clear();\r\n    lcd.setCursor(posisi, 0);\r\n    lcd.print(pesan);\r\n    delay(250);\r\n  }\r\n}\r\n",
+          "path": "/assets/sketches/03-lcd-1602-i2c-02-running-text-02-running-text-ino.ino"
+        },
+        {
+          "id": "03-lcd-1602-i2c-03-baca-potensiometer-03-baca-potensiometer-ino",
+          "title": "Baca Potensiometer",
+          "filename": "03_Baca_Potensiometer.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(A0);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Nilai A0:       \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(nilai);\r\n  lcd.print(\"        \");\r\n  delay(250);\r\n}\r\n",
+          "path": "/assets/sketches/03-lcd-1602-i2c-03-baca-potensiometer-03-baca-potensiometer-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "04-ultrasonic-hy-srf05",
+      "number": "04",
+      "title": "Ultrasonic HY-SRF05",
+      "category": "Komponen",
+      "description": "Materi praktik Ultrasonic HY-SRF05.",
+      "readme": "",
+      "image": "/assets/04-ultrasonic-hy-srf05/04_ultrasonic_hy-srf05-referensi.jpg",
+      "sketches": [
+        {
+          "id": "04-ultrasonic-hy-srf05-01-baca-jarak-serial-01-baca-jarak-serial-ino",
+          "title": "Baca Jarak Serial",
+          "filename": "01_Baca_Jarak_Serial.ino",
+          "code": "const int TRIG = 9;\r\nconst int ECHO = 10;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  float jarak = durasi * 0.0343 / 2;\r\n\r\n  if (durasi == 0) {\r\n    Serial.println(\"Tidak ada pembacaan\");\r\n  } else {\r\n    Serial.print(\"Jarak: \");\r\n    Serial.print(jarak);\r\n    Serial.println(\" cm\");\r\n  }\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/04-ultrasonic-hy-srf05-01-baca-jarak-serial-01-baca-jarak-serial-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "05-buzzer-5v",
+      "number": "05",
+      "title": "Buzzer 5V",
+      "category": "Komponen",
+      "description": "Materi praktik Buzzer 5V.",
+      "readme": "",
+      "image": "/assets/05-buzzer-5v/05_buzzer_5v-referensi.webp",
+      "sketches": [
+        {
+          "id": "05-buzzer-5v-01-bunyi-alarm-01-bunyi-alarm-ino",
+          "title": "Bunyi Alarm",
+          "filename": "01_Bunyi_Alarm.ino",
+          "code": "const int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(BUZZER, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(BUZZER, HIGH);\r\n  delay(300);\r\n  digitalWrite(BUZZER, LOW);\r\n  delay(700);\r\n}\r\n",
+          "path": "/assets/sketches/05-buzzer-5v-01-bunyi-alarm-01-bunyi-alarm-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "06-led-5mm",
+      "number": "06",
+      "title": "LED 5mm",
+      "category": "Komponen",
+      "description": "Materi praktik LED 5mm.",
+      "readme": "",
+      "image": "/assets/06-led-5mm/06_led_5mm-referensi.jpg",
+      "sketches": [
+        {
+          "id": "06-led-5mm-01-led-bergantian-01-led-bergantian-ino",
+          "title": "LED Bergantian",
+          "filename": "01_LED_Bergantian.ino",
+          "code": "const int LED_MERAH = 6;\r\nconst int LED_HIJAU = 7;\r\n\r\nvoid setup() {\r\n  pinMode(LED_MERAH, OUTPUT);\r\n  pinMode(LED_HIJAU, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(LED_MERAH, HIGH);\r\n  digitalWrite(LED_HIJAU, LOW);\r\n  delay(500);\r\n  digitalWrite(LED_MERAH, LOW);\r\n  digitalWrite(LED_HIJAU, HIGH);\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/06-led-5mm-01-led-bergantian-01-led-bergantian-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "07-ir-obstacle",
+      "number": "07",
+      "title": "IR Obstacle",
+      "category": "Komponen",
+      "description": "Materi praktik IR Obstacle.",
+      "readme": "",
+      "image": "/assets/07-ir-obstacle/07_ir_obstacle-referensi.webp",
+      "sketches": [
+        {
+          "id": "07-ir-obstacle-01-deteksi-benda-01-deteksi-benda-ino",
+          "title": "Deteksi Benda",
+          "filename": "01_Deteksi_Benda.ino",
+          "code": "const int SENSOR_IR = 2;\r\nconst int LED = 13;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  pinMode(SENSOR_IR, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  int terdeteksi = digitalRead(SENSOR_IR);\r\n  bool adaBenda = terdeteksi == LOW;\r\n  digitalWrite(LED, adaBenda ? HIGH : LOW);\r\n  Serial.println(adaBenda ? \"Benda terdeteksi\" : \"Jalur kosong\");\r\n  delay(300);\r\n}\r\n",
+          "path": "/assets/sketches/07-ir-obstacle-01-deteksi-benda-01-deteksi-benda-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "08-rfid-rc522",
+      "number": "08",
+      "title": "RFID RC522",
+      "category": "Komponen",
+      "description": "- Nama: `MFRC522`",
+      "readme": "# RFID RC522\r\n\r\n## Library\r\n\r\n- Nama: `MFRC522`\r\n- Arduino IDE: **Library Manager** -> cari `MFRC522` -> install\r\n- Sumber: https://github.com/miguelbalboa/rfid\r\n\r\n## Koneksi Arduino Uno\r\n\r\n| RC522 | Arduino Uno |\r\n|---|---|\r\n| 3.3V | 3.3V, jangan 5V |\r\n| GND | GND |\r\n| SDA/SS | D10 |\r\n| SCK | D13 |\r\n| MOSI | D11 |\r\n| MISO | D12 |\r\n| RST | D9 |",
+      "image": "/assets/08-rfid-rc522/08_rfid_rc522-referensi.jpg",
+      "sketches": [
+        {
+          "id": "08-rfid-rc522-01-baca-kartu-01-baca-kartu-ino",
+          "title": "Baca Kartu",
+          "filename": "01_Baca_Kartu.ino",
+          "code": "#include <SPI.h>\r\n#include <MFRC522.h>\r\n\r\nconst int SS_PIN = 10;\r\nconst int RST_PIN = 9;\r\nMFRC522 rfid(SS_PIN, RST_PIN);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  SPI.begin();\r\n  rfid.PCD_Init();\r\n  Serial.println(\"Tempelkan kartu RFID...\");\r\n}\r\n\r\nvoid loop() {\r\n  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {\r\n    return;\r\n  }\r\n\r\n  Serial.print(\"UID: \");\r\n  for (byte i = 0; i < rfid.uid.size; i++) {\r\n    if (rfid.uid.uidByte[i] < 0x10) {\r\n      Serial.print(\"0\");\r\n    }\r\n    Serial.print(rfid.uid.uidByte[i], HEX);\r\n    Serial.print(\" \");\r\n  }\r\n  Serial.println();\r\n  rfid.PICC_HaltA();\r\n  rfid.PCD_StopCrypto1();\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/08-rfid-rc522-01-baca-kartu-01-baca-kartu-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "09-ldr",
+      "number": "09",
+      "title": "LDR",
+      "category": "Komponen",
+      "description": "Materi praktik LDR.",
+      "readme": "",
+      "image": "/assets/09-ldr/09_ldr-referensi.webp",
+      "sketches": [
+        {
+          "id": "09-ldr-01-baca-cahaya-01-baca-cahaya-ino",
+          "title": "Baca Cahaya",
+          "filename": "01_Baca_Cahaya.ino",
+          "code": "const int LDR = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  Serial.print(\"Nilai cahaya: \");\r\n  Serial.println(analogRead(LDR));\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/09-ldr-01-baca-cahaya-01-baca-cahaya-ino.ino"
+        },
+        {
+          "id": "09-ldr-02-lampu-otomatis-02-lampu-otomatis-ino",
+          "title": "Lampu Otomatis",
+          "filename": "02_Lampu_Otomatis.ino",
+          "code": "const int LDR = A0;\r\nconst int LAMPU = 8;\r\nconst int BATAS_GELAP = 500;\r\n\r\nvoid setup() {\r\n  pinMode(LAMPU, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  int nilaiCahaya = analogRead(LDR);\r\n  digitalWrite(LAMPU, nilaiCahaya < BATAS_GELAP ? HIGH : LOW);\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/09-ldr-02-lampu-otomatis-02-lampu-otomatis-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "10-dht11",
+      "number": "10",
+      "title": "DHT11",
+      "category": "Komponen",
+      "description": "- Nama: `DHT sensor library`",
+      "readme": "# DHT11\r\n\r\n## Library\r\n\r\n- Nama: `DHT sensor library`\r\n- Arduino IDE: **Library Manager** -> cari `DHT sensor library` dari Adafruit -> install\r\n- Dependency: `Adafruit Unified Sensor`\r\n- Sumber: https://github.com/adafruit/DHT-sensor-library\r\n\r\n## Koneksi dasar\r\n\r\n- VCC: 5V\r\n- GND: GND\r\n- DATA: D2",
+      "image": "/assets/10-dht11/10_dht11-referensi.webp",
+      "sketches": [
+        {
+          "id": "10-dht11-01-monitor-suhu-kelembapan-01-monitor-suhu-kelembapan-ino",
+          "title": "Monitor Suhu Kelembapan",
+          "filename": "01_Monitor_Suhu_Kelembapan.ino",
+          "code": "#include <DHT.h>\r\n\r\n#define PIN_DHT 2\r\n#define JENIS_DHT DHT11\r\nDHT dht(PIN_DHT, JENIS_DHT);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  dht.begin();\r\n}\r\n\r\nvoid loop() {\r\n  float kelembapan = dht.readHumidity();\r\n  float suhu = dht.readTemperature();\r\n\r\n  if (isnan(kelembapan) || isnan(suhu)) {\r\n    Serial.println(\"Gagal membaca DHT11\");\r\n  } else {\r\n    Serial.print(\"Suhu: \");\r\n    Serial.print(suhu);\r\n    Serial.print(\" C | Kelembapan: \");\r\n    Serial.print(kelembapan);\r\n    Serial.println(\" %\");\r\n  }\r\n  delay(2000);\r\n}\r\n",
+          "path": "/assets/sketches/10-dht11-01-monitor-suhu-kelembapan-01-monitor-suhu-kelembapan-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "11-soil-moisture",
+      "number": "11",
+      "title": "Soil Moisture",
+      "category": "Komponen",
+      "description": "Materi praktik Soil Moisture.",
+      "readme": "",
+      "image": "/assets/11-soil-moisture/11_soil_moisture-referensi.jpg",
+      "sketches": [
+        {
+          "id": "11-soil-moisture-01-baca-kelembapan-tanah-01-baca-kelembapan-tanah-ino",
+          "title": "Baca Kelembapan Tanah",
+          "filename": "01_Baca_Kelembapan_Tanah.ino",
+          "code": "const int SOIL = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(SOIL);\r\n  Serial.print(\"Nilai tanah: \");\r\n  Serial.println(nilai);\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/11-soil-moisture-01-baca-kelembapan-tanah-01-baca-kelembapan-tanah-ino.ino"
+        },
+        {
+          "id": "11-soil-moisture-02-pompa-dengan-relay-02-pompa-dengan-relay-ino",
+          "title": "Pompa Dengan Relay",
+          "filename": "02_Pompa_Dengan_Relay.ino",
+          "code": "const int SOIL = A0;\r\nconst int RELAY = 7;\r\nconst int BATAS_KERING = 700;\r\n\r\nvoid setup() {\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, HIGH);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(SOIL);\r\n  bool tanahKering = nilai > BATAS_KERING;\r\n  digitalWrite(RELAY, tanahKering ? LOW : HIGH);\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/11-soil-moisture-02-pompa-dengan-relay-02-pompa-dengan-relay-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "12-ds18b20",
+      "number": "12",
+      "title": "DS18B20",
+      "category": "Komponen",
+      "description": "- Nama: `OneWire`",
+      "readme": "# DS18B20 Waterproof\r\n\r\n## Library\r\n\r\n- Nama: `OneWire`\r\n- Sumber: https://github.com/PaulStoffregen/OneWire\r\n- Nama: `DallasTemperature`\r\n- Sumber: https://github.com/milesburton/Arduino-Temperature-Control-Library\r\n\r\nPasang keduanya melalui Arduino IDE **Library Manager**.\r\n\r\n## Koneksi dasar\r\n\r\n- Merah: 5V\r\n- Hitam: GND\r\n- Kuning/data: D2\r\n- Tambahkan resistor 4.7K ohm antara DATA dan 5V.",
+      "image": "/assets/12-ds18b20/ds18b20.jpg",
+      "sketches": [
+        {
+          "id": "12-ds18b20-01-baca-suhu-air-01-baca-suhu-air-ino",
+          "title": "Baca Suhu Air",
+          "filename": "01_Baca_Suhu_Air.ino",
+          "code": "#include <OneWire.h>\r\n#include <DallasTemperature.h>\r\n\r\nconst int ONE_WIRE_BUS = 2;\r\nOneWire oneWire(ONE_WIRE_BUS);\r\nDallasTemperature sensor(&oneWire);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  sensor.begin();\r\n}\r\n\r\nvoid loop() {\r\n  sensor.requestTemperatures();\r\n  float suhu = sensor.getTempCByIndex(0);\r\n  Serial.print(\"Suhu: \");\r\n  Serial.print(suhu);\r\n  Serial.println(\" C\");\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/12-ds18b20-01-baca-suhu-air-01-baca-suhu-air-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "13-rain-sensor",
+      "number": "13",
+      "title": "Rain Sensor",
+      "category": "Komponen",
+      "description": "Materi praktik Rain Sensor.",
+      "readme": "",
+      "image": "/assets/13-rain-sensor/13_rain_sensor-referensi.webp",
+      "sketches": [
+        {
+          "id": "13-rain-sensor-01-deteksi-hujan-01-deteksi-hujan-ino",
+          "title": "Deteksi Hujan",
+          "filename": "01_Deteksi_Hujan.ino",
+          "code": "const int RAIN = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(RAIN);\r\n  Serial.print(\"Nilai sensor hujan: \");\r\n  Serial.println(nilai);\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/13-rain-sensor-01-deteksi-hujan-01-deteksi-hujan-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "14-sound-sensor",
+      "number": "14",
+      "title": "Sound Sensor",
+      "category": "Komponen",
+      "description": "Materi praktik Sound Sensor.",
+      "readme": "",
+      "image": "/assets/14-sound-sensor/14_sound_sensor-referensi.webp",
+      "sketches": [
+        {
+          "id": "14-sound-sensor-01-deteksi-suara-01-deteksi-suara-ino",
+          "title": "Deteksi Suara",
+          "filename": "01_Deteksi_Suara.ino",
+          "code": "const int SOUND = 2;\r\nconst int LED = 13;\r\n\r\nvoid setup() {\r\n  pinMode(SOUND, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int suara = digitalRead(SOUND);\r\n  digitalWrite(LED, suara == HIGH ? HIGH : LOW);\r\n  Serial.println(suara == HIGH ? \"Suara terdeteksi\" : \"Hening\");\r\n  delay(100);\r\n}\r\n",
+          "path": "/assets/sketches/14-sound-sensor-01-deteksi-suara-01-deteksi-suara-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "15-flame-sensor",
+      "number": "15",
+      "title": "Flame Sensor",
+      "category": "Komponen",
+      "description": "Materi praktik Flame Sensor.",
+      "readme": "",
+      "image": "/assets/15-flame-sensor/15_flame_sensor-referensi.webp",
+      "sketches": [
+        {
+          "id": "15-flame-sensor-01-alarm-api-01-alarm-api-ino",
+          "title": "Alarm Api",
+          "filename": "01_Alarm_Api.ino",
+          "code": "const int FLAME = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(FLAME, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool apiTerdeteksi = digitalRead(FLAME) == LOW;\r\n  digitalWrite(BUZZER, apiTerdeteksi ? HIGH : LOW);\r\n  Serial.println(apiTerdeteksi ? \"API TERDETEKSI\" : \"Aman\");\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/15-flame-sensor-01-alarm-api-01-alarm-api-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "16-mq2-gas-asap",
+      "number": "16",
+      "title": "MQ2 Gas Asap",
+      "category": "Komponen",
+      "description": "Materi praktik MQ2 Gas Asap.",
+      "readme": "",
+      "image": "/assets/16-mq2-gas-asap/mq2_gas_asap.png",
+      "sketches": [
+        {
+          "id": "16-mq2-gas-asap-01-baca-gas-01-baca-gas-ino",
+          "title": "Baca Gas",
+          "filename": "01_Baca_Gas.ino",
+          "code": "const int MQ2 = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(MQ2);\r\n  Serial.print(\"Nilai MQ-2: \");\r\n  Serial.println(nilai);\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/16-mq2-gas-asap-01-baca-gas-01-baca-gas-ino.ino"
+        },
+        {
+          "id": "16-mq2-gas-asap-02-alarm-asap-02-alarm-asap-ino",
+          "title": "Alarm Asap",
+          "filename": "02_Alarm_Asap.ino",
+          "code": "const int MQ2 = A0;\r\nconst int BUZZER = 8;\r\nconst int BATAS_ASAP = 450;\r\n\r\nvoid setup() {\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(MQ2);\r\n  bool asapTinggi = nilai > BATAS_ASAP;\r\n  digitalWrite(BUZZER, asapTinggi ? HIGH : LOW);\r\n  Serial.println(asapTinggi ? \"PERINGATAN ASAP\" : \"Udara normal\");\r\n  delay(300);\r\n}\r\n",
+          "path": "/assets/sketches/16-mq2-gas-asap-02-alarm-asap-02-alarm-asap-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "17-sw420-getaran",
+      "number": "17",
+      "title": "SW420 Getaran",
+      "category": "Komponen",
+      "description": "Materi praktik SW420 Getaran.",
+      "readme": "",
+      "image": "/assets/17-sw420-getaran/17_sw420_getaran-referensi.jpg",
+      "sketches": [
+        {
+          "id": "17-sw420-getaran-01-alarm-getaran-01-alarm-getaran-ino",
+          "title": "Alarm Getaran",
+          "filename": "01_Alarm_Getaran.ino",
+          "code": "const int GETARAN = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(GETARAN, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool adaGetaran = digitalRead(GETARAN) == HIGH;\r\n  digitalWrite(BUZZER, adaGetaran ? HIGH : LOW);\r\n  Serial.println(adaGetaran ? \"Getaran terdeteksi\" : \"Tidak ada getaran\");\r\n  delay(100);\r\n}\r\n",
+          "path": "/assets/sketches/17-sw420-getaran-01-alarm-getaran-01-alarm-getaran-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "18-relay-5v",
+      "number": "18",
+      "title": "Relay 5V",
+      "category": "Komponen",
+      "description": "Materi praktik Relay 5V.",
+      "readme": "",
+      "image": "/assets/18-relay-5v/18_relay_5v-referensi.webp",
+      "sketches": [
+        {
+          "id": "18-relay-5v-01-nyalakan-matikan-relay-01-nyalakan-matikan-relay-ino",
+          "title": "Nyalakan Matikan Relay",
+          "filename": "01_Nyalakan_Matikan_Relay.ino",
+          "code": "const int RELAY = 7;\r\n\r\nvoid setup() {\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, HIGH);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(RELAY, LOW);\r\n  delay(2000);\r\n  digitalWrite(RELAY, HIGH);\r\n  delay(2000);\r\n}\r\n",
+          "path": "/assets/sketches/18-relay-5v-01-nyalakan-matikan-relay-01-nyalakan-matikan-relay-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "19-projek-gabungan",
+      "number": "19",
+      "title": "Projek Gabungan",
+      "category": "Projek",
+      "description": "Semua sketch di sini menggabungkan dua atau tiga alat. Buka setiap sketch dari subfoldernya masing-masing.",
+      "readme": "# Projek Gabungan Sederhana\r\n\r\nSemua sketch di sini menggabungkan dua atau tiga alat. Buka setiap sketch dari subfoldernya masing-masing.\r\n\r\n## Daftar proyek\r\n\r\n1. Servo + ultrasonic: servo membuka saat benda lebih dekat dari 15 cm.\r\n2. Servo + ultrasonic + LCD: jarak ditampilkan di LCD dan servo bergerak otomatis.\r\n3. Soil moisture + LCD: nilai kelembapan tanah ditampilkan di LCD.\r\n4. Ultrasonic + buzzer: alarm berbunyi jika benda terlalu dekat.\r\n5. LDR + LED: lampu menyala saat gelap.\r\n6. DHT11 + LCD: suhu dan kelembapan tampil di LCD.\r\n7. Rain sensor + servo + buzzer: servo bergerak dan alarm berbunyi saat hujan.\r\n8. Flame sensor + buzzer + LCD: alarm api dengan informasi di LCD.\r\n9. MQ-2 + buzzer + LED: indikator asap atau gas.\r\n10. Sound sensor + relay: suara mengaktifkan relay.\r\n11. SW-420 + buzzer + LED: alarm getaran.\r\n12. RFID + servo + buzzer: kunci servo dengan kartu RFID.\r\n13. DS18B20 + LCD: suhu tampil di LCD.\r\n\r\nLibrary yang dibutuhkan hanya untuk proyek LCD: `LiquidCrystal I2C`.",
+      "image": null,
+      "sketches": [
+        {
+          "id": "19-projek-gabungan-01-servo-ultrasonic-01-servo-ultrasonic-ino",
+          "title": "Servo Ultrasonic",
+          "filename": "01_Servo_Ultrasonic.ino",
+          "code": "#include <Servo.h>\r\n\r\nconst int TRIG = 7;\r\nconst int ECHO = 8;\r\nconst int SERVO_PIN = 9;\r\nServo servo;\r\n\r\nlong bacaJarakCm() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  if (durasi == 0) {\r\n    return 999;\r\n  }\r\n  return durasi * 0.0343 / 2;\r\n}\r\n\r\nvoid setup() {\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n  servo.attach(SERVO_PIN);\r\n  servo.write(0);\r\n}\r\n\r\nvoid loop() {\r\n  long jarak = bacaJarakCm();\r\n  servo.write(jarak < 15 ? 90 : 0);\r\n  delay(200);\r\n}",
+          "path": "/assets/sketches/19-projek-gabungan-01-servo-ultrasonic-01-servo-ultrasonic-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-02-servo-ultrasonic-lcd-02-servo-ultrasonic-lcd-ino",
+          "title": "Servo Ultrasonic LCD",
+          "filename": "02_Servo_Ultrasonic_LCD.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <Servo.h>\r\n\r\nconst int TRIG = 7;\r\nconst int ECHO = 8;\r\nconst int SERVO_PIN = 9;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nServo servo;\r\n\r\nlong bacaJarakCm() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  return durasi == 0 ? 999 : durasi * 0.0343 / 2;\r\n}\r\n\r\nvoid setup() {\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n  servo.attach(SERVO_PIN);\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  long jarak = bacaJarakCm();\r\n  bool dekat = jarak < 15;\r\n  servo.write(dekat ? 90 : 0);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Jarak: \");\r\n  lcd.print(jarak);\r\n  lcd.print(\" cm   \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(dekat ? \"Servo: TERBUKA \" : \"Servo: TUTUP   \");\r\n  delay(300);\r\n}",
+          "path": "/assets/sketches/19-projek-gabungan-02-servo-ultrasonic-lcd-02-servo-ultrasonic-lcd-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-03-soil-moisture-lcd-03-soil-moisture-lcd-ino",
+          "title": "Soil Moisture LCD",
+          "filename": "03_Soil_Moisture_LCD.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nconst int SOIL = A0;\r\nconst int BATAS_KERING = 700;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(SOIL);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Tanah: \");\r\n  lcd.print(nilai);\r\n  lcd.print(\"       \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(nilai > BATAS_KERING ? \"Kondisi: KERING\" : \"Kondisi: BASAH \");\r\n  delay(500);\r\n}",
+          "path": "/assets/sketches/19-projek-gabungan-03-soil-moisture-lcd-03-soil-moisture-lcd-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-04-ultrasonic-buzzer-04-ultrasonic-buzzer-ino",
+          "title": "Ultrasonic Buzzer",
+          "filename": "04_Ultrasonic_Buzzer.ino",
+          "code": "const int TRIG = 7;\r\nconst int ECHO = 8;\r\nconst int BUZZER = 9;\r\n\r\nlong bacaJarak() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  return durasi == 0 ? 999 : durasi * 0.0343 / 2;\r\n}\r\n\r\nvoid setup() {\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  long jarak = bacaJarak();\r\n  if (jarak < 15) {\r\n    tone(BUZZER, 1200);\r\n  } else {\r\n    noTone(BUZZER);\r\n  }\r\n  delay(100);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-04-ultrasonic-buzzer-04-ultrasonic-buzzer-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-05-ldr-led-05-ldr-led-ino",
+          "title": "LDR LED",
+          "filename": "05_LDR_LED.ino",
+          "code": "const int LDR = A0;\r\nconst int LED = 8;\r\nconst int BATAS_GELAP = 500;\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  int cahaya = analogRead(LDR);\r\n  digitalWrite(LED, cahaya < BATAS_GELAP ? HIGH : LOW);\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-05-ldr-led-05-ldr-led-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-06-dht11-lcd-06-dht11-lcd-ino",
+          "title": "DHT11 LCD",
+          "filename": "06_DHT11_LCD.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <DHT.h>\r\n\r\n#define PIN_DHT 2\r\n#define JENIS_DHT DHT11\r\nDHT dht(PIN_DHT, JENIS_DHT);\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  dht.begin();\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  float suhu = dht.readTemperature();\r\n  float kelembapan = dht.readHumidity();\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Suhu: \");\r\n  lcd.print(suhu);\r\n  lcd.print(\" C       \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(\"Lembap: \");\r\n  lcd.print(kelembapan);\r\n  lcd.print(\"%      \");\r\n  delay(2000);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-06-dht11-lcd-06-dht11-lcd-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-07-rain-servo-buzzer-07-rain-servo-buzzer-ino",
+          "title": "Rain Servo Buzzer",
+          "filename": "07_Rain_Servo_Buzzer.ino",
+          "code": "#include <Servo.h>\r\n\r\nconst int RAIN = A0;\r\nconst int SERVO_PIN = 9;\r\nconst int BUZZER = 8;\r\nconst int BATAS_HUJAN = 600;\r\nServo servo;\r\n\r\nvoid setup() {\r\n  servo.attach(SERVO_PIN);\r\n  pinMode(BUZZER, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  bool hujan = analogRead(RAIN) < BATAS_HUJAN;\r\n  servo.write(hujan ? 90 : 0);\r\n  digitalWrite(BUZZER, hujan ? HIGH : LOW);\r\n  delay(300);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-07-rain-servo-buzzer-07-rain-servo-buzzer-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-08-flame-buzzer-lcd-08-flame-buzzer-lcd-ino",
+          "title": "Flame Buzzer LCD",
+          "filename": "08_Flame_Buzzer_LCD.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nconst int FLAME = 2;\r\nconst int BUZZER = 8;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  pinMode(FLAME, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  bool api = digitalRead(FLAME) == LOW;\r\n  digitalWrite(BUZZER, api ? HIGH : LOW);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(api ? \"BAHAYA API     \" : \"Kondisi Aman    \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(api ? \"Alarm aktif     \" : \"Tidak ada api   \");\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-08-flame-buzzer-lcd-08-flame-buzzer-lcd-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-09-mq2-buzzer-led-09-mq2-buzzer-led-ino",
+          "title": "MQ2 Buzzer LED",
+          "filename": "09_MQ2_Buzzer_LED.ino",
+          "code": "const int MQ2 = A0;\r\nconst int BUZZER = 8;\r\nconst int LED = 13;\r\nconst int BATAS_ASAP = 450;\r\n\r\nvoid setup() {\r\n  pinMode(BUZZER, OUTPUT);\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool asap = analogRead(MQ2) > BATAS_ASAP;\r\n  digitalWrite(BUZZER, asap ? HIGH : LOW);\r\n  digitalWrite(LED, asap ? HIGH : LOW);\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-09-mq2-buzzer-led-09-mq2-buzzer-led-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-10-sound-relay-10-sound-relay-ino",
+          "title": "Sound Relay",
+          "filename": "10_Sound_Relay.ino",
+          "code": "const int SOUND = 2;\r\nconst int RELAY = 7;\r\n\r\nvoid setup() {\r\n  pinMode(SOUND, INPUT);\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, HIGH);\r\n}\r\n\r\nvoid loop() {\r\n  bool adaSuara = digitalRead(SOUND) == HIGH;\r\n  digitalWrite(RELAY, adaSuara ? LOW : HIGH);\r\n  delay(100);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-10-sound-relay-10-sound-relay-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-11-getaran-buzzer-led-11-getaran-buzzer-led-ino",
+          "title": "Getaran Buzzer LED",
+          "filename": "11_Getaran_Buzzer_LED.ino",
+          "code": "const int GETARAN = 2;\r\nconst int BUZZER = 8;\r\nconst int LED = 13;\r\n\r\nvoid setup() {\r\n  pinMode(GETARAN, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  pinMode(LED, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  bool bergetar = digitalRead(GETARAN) == HIGH;\r\n  digitalWrite(BUZZER, bergetar ? HIGH : LOW);\r\n  digitalWrite(LED, bergetar ? HIGH : LOW);\r\n  delay(100);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-11-getaran-buzzer-led-11-getaran-buzzer-led-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-12-rfid-servo-buzzer-12-rfid-servo-buzzer-ino",
+          "title": "RFID Servo Buzzer",
+          "filename": "12_RFID_Servo_Buzzer.ino",
+          "code": "#include <SPI.h>\r\n#include <MFRC522.h>\r\n#include <Servo.h>\r\n\r\nconst int SS_PIN = 10;\r\nconst int RST_PIN = 9;\r\nconst int BUZZER = 8;\r\nMFRC522 rfid(SS_PIN, RST_PIN);\r\nServo servo;\r\n\r\nvoid setup() {\r\n  SPI.begin();\r\n  rfid.PCD_Init();\r\n  servo.attach(6);\r\n  pinMode(BUZZER, OUTPUT);\r\n  servo.write(0);\r\n}\r\n\r\nvoid loop() {\r\n  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {\r\n    return;\r\n  }\r\n  servo.write(90);\r\n  tone(BUZZER, 1200, 200);\r\n  delay(3000);\r\n  servo.write(0);\r\n  rfid.PICC_HaltA();\r\n  rfid.PCD_StopCrypto1();\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-12-rfid-servo-buzzer-12-rfid-servo-buzzer-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-13-ds18b20-lcd-13-ds18b20-lcd-ino",
+          "title": "DS18B20 LCD",
+          "filename": "13_DS18B20_LCD.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <OneWire.h>\r\n#include <DallasTemperature.h>\r\n\r\nconst int ONE_WIRE_BUS = 2;\r\nOneWire oneWire(ONE_WIRE_BUS);\r\nDallasTemperature sensor(&oneWire);\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  sensor.begin();\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  sensor.requestTemperatures();\r\n  float suhu = sensor.getTempCByIndex(0);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Suhu DS18B20:\");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(suhu);\r\n  lcd.print(\" C        \");\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/19-projek-gabungan-13-ds18b20-lcd-13-ds18b20-lcd-ino.ino"
+        }
+      ]
+    },
+    {
+      "id": "20-projek-kompleks",
+      "number": "20",
+      "title": "Projek Kompleks",
+      "category": "Projek",
+      "description": "Setiap proyek di folder ini menggunakan minimal empat alat atau modul. Buka sketch dari subfoldernya masing-masing.",
+      "readme": "# Projek Kompleks Arduino\r\n\r\nSetiap proyek di folder ini menggunakan minimal empat alat atau modul. Buka sketch dari subfoldernya masing-masing.\r\n\r\n## Daftar proyek\r\n\r\n1. Tong sampah otomatis: ultrasonic + servo + buzzer + LCD.\r\n2. Pintu RFID aman: RFID + servo + buzzer + LCD.\r\n3. Sistem keamanan rumah: getaran + flame sensor + buzzer + LED + LCD.\r\n4. Penyiram tanaman pintar: soil moisture + relay + LCD + rain sensor.\r\n5. Stasiun lingkungan: DHT11 + LDR + MQ-2 + LCD + buzzer.\r\n\r\n## Library yang digunakan\r\n\r\n- `LiquidCrystal I2C`\r\n- `MFRC522`\r\n- `DHT sensor library`\r\n- `Adafruit Unified Sensor` sebagai dependency DHT11\r\n\r\nPasang melalui **Arduino IDE -> Library -> Manage Libraries**. Link dan catatan koneksi tersedia di README folder komponen terkait.\r\n\r\n## Catatan keselamatan\r\n\r\n- Semua modul harus memiliki GND yang sama.\r\n- RC522 menggunakan 3.3V, bukan 5V.\r\n- Relay hanya mengendalikan beban yang sesuai spesifikasi modul.\r\n- Untuk pompa atau motor, gunakan catu daya eksternal yang sesuai.\r\n- Nilai batas sensor seperti `BATAS_GAS`, `BATAS_GELAP`, dan `BATAS_HUJAN` perlu dikalibrasi.\r\n",
+      "image": null,
+      "sketches": [
+        {
+          "id": "20-projek-kompleks-01-tong-sampah-otomatis-01-tong-sampah-otomatis-ino",
+          "title": "Tong Sampah Otomatis",
+          "filename": "01_Tong_Sampah_Otomatis.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <Servo.h>\r\n\r\nconst int TRIG = 7;\r\nconst int ECHO = 8;\r\nconst int SERVO_PIN = 9;\r\nconst int BUZZER = 6;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nServo servo;\r\n\r\nlong bacaJarakCm() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  return durasi == 0 ? 999 : durasi * 0.0343 / 2;\r\n}\r\n\r\nvoid setup() {\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  servo.attach(SERVO_PIN);\r\n  servo.write(0);\r\n  lcd.init();\r\n  lcd.backlight();\r\n  lcd.print(\"Tong Sampah\");\r\n  delay(1500);\r\n  lcd.clear();\r\n}\r\n\r\nvoid loop() {\r\n  long jarak = bacaJarakCm();\r\n  bool tanganDekat = jarak < 20;\r\n  servo.write(tanganDekat ? 90 : 0);\r\n  digitalWrite(BUZZER, tanganDekat ? HIGH : LOW);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Jarak: \");\r\n  lcd.print(jarak);\r\n  lcd.print(\" cm    \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(tanganDekat ? \"Tutup terbuka   \" : \"Siap digunakan  \");\r\n  delay(250);\r\n}\r\n",
+          "path": "/assets/sketches/20-projek-kompleks-01-tong-sampah-otomatis-01-tong-sampah-otomatis-ino.ino"
+        },
+        {
+          "id": "20-projek-kompleks-02-pintu-rfid-aman-02-pintu-rfid-aman-ino",
+          "title": "Pintu RFID Aman",
+          "filename": "02_Pintu_RFID_Aman.ino",
+          "code": "#include <SPI.h>\r\n#include <MFRC522.h>\r\n#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <Servo.h>\r\n\r\nconst int SS_PIN = 10;\r\nconst int RST_PIN = 9;\r\nconst int SERVO_PIN = 6;\r\nconst int BUZZER = 7;\r\nMFRC522 rfid(SS_PIN, RST_PIN);\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nServo servo;\r\n\r\nvoid tampilkan(const char* baris1, const char* baris2) {\r\n  lcd.clear();\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(baris1);\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(baris2);\r\n}\r\n\r\nvoid setup() {\r\n  SPI.begin();\r\n  rfid.PCD_Init();\r\n  servo.attach(SERVO_PIN);\r\n  pinMode(BUZZER, OUTPUT);\r\n  servo.write(0);\r\n  lcd.init();\r\n  lcd.backlight();\r\n  tampilkan(\"Pintu RFID\", \"Tempelkan kartu\");\r\n}\r\n\r\nvoid loop() {\r\n  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {\r\n    return;\r\n  }\r\n\r\n  servo.write(90);\r\n  tone(BUZZER, 1400, 200);\r\n  tampilkan(\"Akses diterima\", \"Pintu terbuka\");\r\n  delay(3000);\r\n  servo.write(0);\r\n  tampilkan(\"Pintu terkunci\", \"Tempelkan kartu\");\r\n  rfid.PICC_HaltA();\r\n  rfid.PCD_StopCrypto1();\r\n}\r\n",
+          "path": "/assets/sketches/20-projek-kompleks-02-pintu-rfid-aman-02-pintu-rfid-aman-ino.ino"
+        },
+        {
+          "id": "20-projek-kompleks-03-sistem-keamanan-03-sistem-keamanan-ino",
+          "title": "Sistem Keamanan",
+          "filename": "03_Sistem_Keamanan.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nconst int GETARAN = 2;\r\nconst int FLAME = 3;\r\nconst int BUZZER = 8;\r\nconst int LED = 13;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  pinMode(GETARAN, INPUT);\r\n  pinMode(FLAME, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  pinMode(LED, OUTPUT);\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  bool getaran = digitalRead(GETARAN) == HIGH;\r\n  bool api = digitalRead(FLAME) == LOW;\r\n  bool bahaya = getaran || api;\r\n\r\n  digitalWrite(BUZZER, bahaya ? HIGH : LOW);\r\n  digitalWrite(LED, bahaya ? HIGH : LOW);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(bahaya ? \"PERINGATAN!     \" : \"Rumah aman      \");\r\n  lcd.setCursor(0, 1);\r\n  if (api) {\r\n    lcd.print(\"Api terdeteksi  \");\r\n  } else if (getaran) {\r\n    lcd.print(\"Getaran terdet. \");\r\n  } else {\r\n    lcd.print(\"Monitoring...   \");\r\n  }\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/20-projek-kompleks-03-sistem-keamanan-03-sistem-keamanan-ino.ino"
+        },
+        {
+          "id": "20-projek-kompleks-04-penyiram-tanaman-pintar-04-penyiram-tanaman-pintar-ino",
+          "title": "Penyiram Tanaman Pintar",
+          "filename": "04_Penyiram_Tanaman_Pintar.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nconst int SOIL = A0;\r\nconst int RAIN = A1;\r\nconst int RELAY = 7;\r\nconst int BATAS_KERING = 700;\r\nconst int BATAS_HUJAN = 600;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, HIGH);\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  int tanah = analogRead(SOIL);\r\n  int hujan = analogRead(RAIN);\r\n  bool tanahKering = tanah > BATAS_KERING;\r\n  bool sedangHujan = hujan < BATAS_HUJAN;\r\n  bool pompaNyala = tanahKering && !sedangHujan;\r\n\r\n  digitalWrite(RELAY, pompaNyala ? LOW : HIGH);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Tanah:\");\r\n  lcd.print(tanah);\r\n  lcd.print(sedangHujan ? \" Hujan \" : \" Cerah \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(pompaNyala ? \"Pompa: NYALA    \" : \"Pompa: MATI     \");\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/20-projek-kompleks-04-penyiram-tanaman-pintar-04-penyiram-tanaman-pintar-ino.ino"
+        },
+        {
+          "id": "20-projek-kompleks-05-stasiun-lingkungan-05-stasiun-lingkungan-ino",
+          "title": "Stasiun Lingkungan",
+          "filename": "05_Stasiun_Lingkungan.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <DHT.h>\r\n\r\n#define PIN_DHT 2\r\n#define JENIS_DHT DHT11\r\nconst int LDR = A0;\r\nconst int MQ2 = A1;\r\nconst int BUZZER = 8;\r\nconst int BATAS_GAS = 450;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nDHT dht(PIN_DHT, JENIS_DHT);\r\n\r\nvoid setup() {\r\n  dht.begin();\r\n  pinMode(BUZZER, OUTPUT);\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  float suhu = dht.readTemperature();\r\n  int cahaya = analogRead(LDR);\r\n  int gas = analogRead(MQ2);\r\n  bool gasTinggi = gas > BATAS_GAS;\r\n  digitalWrite(BUZZER, gasTinggi ? HIGH : LOW);\r\n\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"S:\");\r\n  lcd.print(suhu);\r\n  lcd.print(\"C L:\");\r\n  lcd.print(cahaya);\r\n  lcd.print(\"   \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(gasTinggi ? \"Gas tinggi!     \" : \"Gas:\");\r\n  if (!gasTinggi) {\r\n    lcd.print(gas);\r\n    lcd.print(\"          \");\r\n  }\r\n  delay(2000);\r\n}\r\n",
+          "path": "/assets/sketches/20-projek-kompleks-05-stasiun-lingkungan-05-stasiun-lingkungan-ino.ino"
+        }
+      ]
+    }
+  ]
+}

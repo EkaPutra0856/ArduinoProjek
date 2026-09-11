@@ -1,0 +1,13 @@
+# Local build output and dependencies
+web/node_modules/
+web/.next/
+web/out/
+web/coverage/
+
+# Local environment and secrets
+web/.env*
+*.pem
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
