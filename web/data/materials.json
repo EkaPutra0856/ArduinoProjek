@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-11T06:48:44.642Z",
+  "generatedAt": "2026-09-11T07:20:59.380Z",
   "chapterCount": 20,
-  "sketchCount": 42,
+  "sketchCount": 43,
   "chapters": [
     {
       "id": "01-arduino-dasar",
@@ -389,7 +389,7 @@
           "id": "19-projek-gabungan-02-servo-ultrasonic-lcd-02-servo-ultrasonic-lcd-ino",
           "title": "Servo Ultrasonic LCD",
           "filename": "02_Servo_Ultrasonic_LCD.ino",
-          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <Servo.h>\r\n\r\nconst int TRIG = 7;\r\nconst int ECHO = 8;\r\nconst int SERVO_PIN = 9;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nServo servo;\r\n\r\nlong bacaJarakCm() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  return durasi == 0 ? 999 : durasi * 0.0343 / 2;\r\n}\r\n\r\nvoid setup() {\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n  servo.attach(SERVO_PIN);\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  long jarak = bacaJarakCm();\r\n  bool dekat = jarak < 15;\r\n  servo.write(dekat ? 90 : 0);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Jarak: \");\r\n  lcd.print(jarak);\r\n  lcd.print(\" cm   \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(dekat ? \"Servo: TERBUKA \" : \"Servo: TUTUP   \");\r\n  delay(300);\r\n}",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <Servo.h>\r\n\r\nconst int TRIG = 7;\r\nconst int ECHO = 8;\r\nconst int SERVO_PIN = 9;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nServo servo;\r\n\r\nlong bacaJarakCm() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  return durasi == 0 ? 0 : durasi * 0.0343 / 2;\r\n}\r\n\r\nvoid setup() {\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n  servo.attach(SERVO_PIN);\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  long jarak = bacaJarakCm();\r\n  bool dekat = jarak > 0 && jarak < 15;\r\n  servo.write(dekat ? 90 : 0);\r\n  lcd.setCursor(0, 0);\r\n  if (jarak == 0) {\r\n    lcd.print(\"Jarak: Tidak ada\");\r\n  } else {\r\n    lcd.print(\"Jarak: \");\r\n    lcd.print(jarak);\r\n    lcd.print(\" cm   \");\r\n  }\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(dekat ? \"Servo: TERBUKA \" : \"Servo: TUTUP   \");\r\n  delay(300);\r\n}",
           "path": "/assets/sketches/19-projek-gabungan-02-servo-ultrasonic-lcd-02-servo-ultrasonic-lcd-ino.ino"
         },
         {
@@ -468,6 +468,13 @@
           "filename": "13_DS18B20_LCD.ino",
           "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <OneWire.h>\r\n#include <DallasTemperature.h>\r\n\r\nconst int ONE_WIRE_BUS = 2;\r\nOneWire oneWire(ONE_WIRE_BUS);\r\nDallasTemperature sensor(&oneWire);\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  sensor.begin();\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  sensor.requestTemperatures();\r\n  float suhu = sensor.getTempCByIndex(0);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Suhu DS18B20:\");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(suhu);\r\n  lcd.print(\" C        \");\r\n  delay(1000);\r\n}\r\n",
           "path": "/assets/sketches/19-projek-gabungan-13-ds18b20-lcd-13-ds18b20-lcd-ino.ino"
+        },
+        {
+          "id": "19-projek-gabungan-lcd-with-ultrasonik-only-14-ultrasonik-lcd-ino",
+          "title": "lcd with-ultrasonik-only",
+          "filename": "14-ultrasonik-lcd.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\n// Inisialisasi LCD pada alamat 0x27 dengan ukuran 16x2\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\n// Deklarasi pin untuk sensor ultrasonik\r\nconst int trigPin = 9;\r\nconst int echoPin = 10;\r\n\r\nvoid setup() {\r\n  // Atur mode pin untuk sensor\r\n  pinMode(trigPin, OUTPUT);\r\n  pinMode(echoPin, INPUT);\r\n\r\n  // Mulai komunikasi LCD\r\n  lcd.init();\r\n  lcd.backlight();\r\n  \r\n  // Tampilkan pesan awal\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Sensor Jarak\");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(\"Memulai...\");\r\n  delay(2000);\r\n  lcd.clear();\r\n}\r\n\r\nvoid loop() {\r\n  long duration;\r\n  int distance;\r\n\r\n  // Pastikan pin Trig dalam keadaan LOW sebelum menembakkan sinyal\r\n  digitalWrite(trigPin, LOW);\r\n  delayMicroseconds(2);\r\n  \r\n  // Tembakkan sinyal ultrasonik selama 10 mikrodetik\r\n  digitalWrite(trigPin, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(trigPin, LOW);\r\n\r\n  // Baca durasi pantulan suara pada pin Echo\r\n  duration = pulseIn(echoPin, HIGH);\r\n\r\n  // Hitung jarak dalam centimeter (kecepatan suara = 340 m/s atau 0.034 cm/us)\r\n  distance = duration * 0.034 / 2;\r\n\r\n  // Tampilkan hasil jarak ke LCD\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Jarak saat ini:\");\r\n  \r\n  lcd.setCursor(0, 1);\r\n  lcd.print(distance);\r\n  lcd.print(\" cm    \"); // Tambahan spasi di belakang untuk menghapus sisa karakter lama\r\n\r\n  // Jeda 0.5 detik sebelum membaca ulang\r\n  delay(500); \r\n}",
+          "path": "/assets/sketches/19-projek-gabungan-lcd-with-ultrasonik-only-14-ultrasonik-lcd-ino.ino"
         }
       ]
     },

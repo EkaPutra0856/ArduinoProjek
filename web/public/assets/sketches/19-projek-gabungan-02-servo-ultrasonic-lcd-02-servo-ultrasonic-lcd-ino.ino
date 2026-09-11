@@ -15,7 +15,7 @@ long bacaJarakCm() {
   delayMicroseconds(10);
   digitalWrite(TRIG, LOW);
   long durasi = pulseIn(ECHO, HIGH, 30000);
-  return durasi == 0 ? 999 : durasi * 0.0343 / 2;
+  return durasi == 0 ? 0 : durasi * 0.0343 / 2;
 }
 
 void setup() {
@@ -28,12 +28,16 @@ void setup() {
 
 void loop() {
   long jarak = bacaJarakCm();
-  bool dekat = jarak < 15;
+  bool dekat = jarak > 0 && jarak < 15;
   servo.write(dekat ? 90 : 0);
   lcd.setCursor(0, 0);
-  lcd.print("Jarak: ");
-  lcd.print(jarak);
-  lcd.print(" cm   ");
+  if (jarak == 0) {
+    lcd.print("Jarak: Tidak ada");
+  } else {
+    lcd.print("Jarak: ");
+    lcd.print(jarak);
+    lcd.print(" cm   ");
+  }
   lcd.setCursor(0, 1);
   lcd.print(dekat ? "Servo: TERBUKA " : "Servo: TUTUP   ");
   delay(300);
