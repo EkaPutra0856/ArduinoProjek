@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-12T00:40:26.188Z",
+  "generatedAt": "2026-09-12T01:28:05.316Z",
   "chapterCount": 20,
-  "sketchCount": 43,
+  "sketchCount": 56,
   "chapters": [
     {
       "id": "01-arduino-dasar",
@@ -18,8 +18,16 @@
           "filename": "01_Blink_LED.ino",
           "code": "const int LED = LED_BUILTIN;\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(LED, HIGH);\r\n  delay(1000);\r\n  digitalWrite(LED, LOW);\r\n  delay(1000);\r\n}\r\n",
           "path": "/assets/sketches/01-arduino-dasar-01-blink-led-01-blink-led-ino.ino"
+        },
+        {
+          "id": "01-arduino-dasar-02-tombol-led-02-tombol-led-ino",
+          "title": "Tombol LED",
+          "filename": "02_Tombol_LED.ino",
+          "code": "const int TOMBOL = 2;\r\nconst int LED = LED_BUILTIN;\r\n\r\nbool ledMenyala = false;\r\nint tombolTerakhir = HIGH;\r\n\r\nvoid setup() {\r\n  pinMode(TOMBOL, INPUT_PULLUP);\r\n  pinMode(LED, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  int tombolSekarang = digitalRead(TOMBOL);\r\n  if (tombolTerakhir == HIGH && tombolSekarang == LOW) {\r\n    ledMenyala = !ledMenyala;\r\n    digitalWrite(LED, ledMenyala ? HIGH : LOW);\r\n    delay(30);\r\n  }\r\n  tombolTerakhir = tombolSekarang;\r\n}\r\n",
+          "path": "/assets/sketches/01-arduino-dasar-02-tombol-led-02-tombol-led-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "02-servo-sg90",
@@ -44,7 +52,8 @@
           "code": "#include <Servo.h>\r\n\r\nServo servo;\r\n\r\nvoid setup() {\r\n  servo.attach(9);\r\n}\r\n\r\nvoid loop() {\r\n  for (int sudut = 0; sudut <= 180; sudut++) {\r\n    servo.write(sudut);\r\n    delay(15);\r\n  }\r\n\r\n  for (int sudut = 180; sudut >= 0; sudut--) {\r\n    servo.write(sudut);\r\n    delay(15);\r\n  }\r\n}\r\n",
           "path": "/assets/sketches/02-servo-sg90-02-sapu-bolak-balik-02-sapu-bolak-balik-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "03-lcd-1602-i2c",
@@ -76,7 +85,8 @@
           "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(A0);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Nilai A0:       \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(nilai);\r\n  lcd.print(\"        \");\r\n  delay(250);\r\n}\r\n",
           "path": "/assets/sketches/03-lcd-1602-i2c-03-baca-potensiometer-03-baca-potensiometer-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "04-ultrasonic-hy-srf05",
@@ -93,8 +103,16 @@
           "filename": "01_Baca_Jarak_Serial.ino",
           "code": "const int TRIG = 9;\r\nconst int ECHO = 10;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  float jarak = durasi * 0.0343 / 2;\r\n\r\n  if (durasi == 0) {\r\n    Serial.println(\"Tidak ada pembacaan\");\r\n  } else {\r\n    Serial.print(\"Jarak: \");\r\n    Serial.print(jarak);\r\n    Serial.println(\" cm\");\r\n  }\r\n  delay(500);\r\n}\r\n",
           "path": "/assets/sketches/04-ultrasonic-hy-srf05-01-baca-jarak-serial-01-baca-jarak-serial-ino.ino"
+        },
+        {
+          "id": "04-ultrasonic-hy-srf05-02-alarm-jarak-02-alarm-jarak-ino",
+          "title": "Alarm Jarak",
+          "filename": "02_Alarm_Jarak.ino",
+          "code": "const int TRIG = 9;\r\nconst int ECHO = 10;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  float jarak = durasi * 0.0343 / 2;\r\n  Serial.print(\"Jarak: \");\r\n  Serial.print(jarak);\r\n  Serial.println(\" cm\");\r\n\r\n  if (jarak > 0 && jarak < 15) tone(BUZZER, 1200);\r\n  else noTone(BUZZER);\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/04-ultrasonic-hy-srf05-02-alarm-jarak-02-alarm-jarak-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "05-buzzer-5v",
@@ -111,8 +129,16 @@
           "filename": "01_Bunyi_Alarm.ino",
           "code": "const int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(BUZZER, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(BUZZER, HIGH);\r\n  delay(300);\r\n  digitalWrite(BUZZER, LOW);\r\n  delay(700);\r\n}\r\n",
           "path": "/assets/sketches/05-buzzer-5v-01-bunyi-alarm-01-bunyi-alarm-ino.ino"
+        },
+        {
+          "id": "05-buzzer-5v-02-buzzer-tombol-02-buzzer-tombol-ino",
+          "title": "Buzzer Tombol",
+          "filename": "02_Buzzer_Tombol.ino",
+          "code": "const int TOMBOL = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(TOMBOL, INPUT_PULLUP);\r\n  pinMode(BUZZER, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  if (digitalRead(TOMBOL) == LOW) {\r\n    tone(BUZZER, 1000);\r\n  } else {\r\n    noTone(BUZZER);\r\n  }\r\n}\r\n",
+          "path": "/assets/sketches/05-buzzer-5v-02-buzzer-tombol-02-buzzer-tombol-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "06-led-5mm",
@@ -129,8 +155,16 @@
           "filename": "01_LED_Bergantian.ino",
           "code": "const int LED_MERAH = 6;\r\nconst int LED_HIJAU = 7;\r\n\r\nvoid setup() {\r\n  pinMode(LED_MERAH, OUTPUT);\r\n  pinMode(LED_HIJAU, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(LED_MERAH, HIGH);\r\n  digitalWrite(LED_HIJAU, LOW);\r\n  delay(500);\r\n  digitalWrite(LED_MERAH, LOW);\r\n  digitalWrite(LED_HIJAU, HIGH);\r\n  delay(500);\r\n}\r\n",
           "path": "/assets/sketches/06-led-5mm-01-led-bergantian-01-led-bergantian-ino.ino"
+        },
+        {
+          "id": "06-led-5mm-02-led-pwm-02-led-pwm-ino",
+          "title": "LED PWM",
+          "filename": "02_LED_PWM.ino",
+          "code": "const int POTENSIOMETER = A0;\r\nconst int LED = 9;\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilaiPotensiometer = analogRead(POTENSIOMETER);\r\n  int terang = map(nilaiPotensiometer, 0, 1023, 0, 255);\r\n  analogWrite(LED, terang);\r\n\r\n  Serial.print(\"Kecerahan: \");\r\n  Serial.println(terang);\r\n  delay(50);\r\n}\r\n",
+          "path": "/assets/sketches/06-led-5mm-02-led-pwm-02-led-pwm-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "07-ir-obstacle",
@@ -147,8 +181,16 @@
           "filename": "01_Deteksi_Benda.ino",
           "code": "const int SENSOR_IR = 2;\r\nconst int LED = 13;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  pinMode(SENSOR_IR, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  int terdeteksi = digitalRead(SENSOR_IR);\r\n  bool adaBenda = terdeteksi == LOW;\r\n  digitalWrite(LED, adaBenda ? HIGH : LOW);\r\n  Serial.println(adaBenda ? \"Benda terdeteksi\" : \"Jalur kosong\");\r\n  delay(300);\r\n}\r\n",
           "path": "/assets/sketches/07-ir-obstacle-01-deteksi-benda-01-deteksi-benda-ino.ino"
+        },
+        {
+          "id": "07-ir-obstacle-02-ir-led-buzzer-02-ir-led-buzzer-ino",
+          "title": "IR LED Buzzer",
+          "filename": "02_IR_LED_Buzzer.ino",
+          "code": "const int SENSOR_IR = 2;\r\nconst int LED = 13;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(SENSOR_IR, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool bendaTerdeteksi = digitalRead(SENSOR_IR) == LOW;\r\n  digitalWrite(LED, bendaTerdeteksi ? HIGH : LOW);\r\n\r\n  if (bendaTerdeteksi) {\r\n    tone(BUZZER, 900);\r\n    Serial.println(\"Benda terdeteksi\");\r\n  } else {\r\n    noTone(BUZZER);\r\n    Serial.println(\"Jalur kosong\");\r\n  }\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/07-ir-obstacle-02-ir-led-buzzer-02-ir-led-buzzer-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "08-rfid-rc522",
@@ -165,8 +207,16 @@
           "filename": "01_Baca_Kartu.ino",
           "code": "#include <SPI.h>\r\n#include <MFRC522.h>\r\n\r\nconst int SS_PIN = 10;\r\nconst int RST_PIN = 9;\r\nMFRC522 rfid(SS_PIN, RST_PIN);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  SPI.begin();\r\n  rfid.PCD_Init();\r\n  Serial.println(\"Tempelkan kartu RFID...\");\r\n}\r\n\r\nvoid loop() {\r\n  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {\r\n    return;\r\n  }\r\n\r\n  Serial.print(\"UID: \");\r\n  for (byte i = 0; i < rfid.uid.size; i++) {\r\n    if (rfid.uid.uidByte[i] < 0x10) {\r\n      Serial.print(\"0\");\r\n    }\r\n    Serial.print(rfid.uid.uidByte[i], HEX);\r\n    Serial.print(\" \");\r\n  }\r\n  Serial.println();\r\n  rfid.PICC_HaltA();\r\n  rfid.PCD_StopCrypto1();\r\n  delay(1000);\r\n}\r\n",
           "path": "/assets/sketches/08-rfid-rc522-01-baca-kartu-01-baca-kartu-ino.ino"
+        },
+        {
+          "id": "08-rfid-rc522-02-cek-uid-02-cek-uid-ino",
+          "title": "Cek UID",
+          "filename": "02_Cek_UID.ino",
+          "code": "#include <SPI.h>\r\n#include <MFRC522.h>\r\n\r\nconst int PIN_SS = 10;\r\nconst int PIN_RST = 9;\r\nMFRC522 rfid(PIN_SS, PIN_RST);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  SPI.begin();\r\n  rfid.PCD_Init();\r\n  Serial.println(\"Tempelkan kartu RFID\");\r\n}\r\n\r\nvoid loop() {\r\n  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) return;\r\n\r\n  Serial.print(\"UID kartu: \");\r\n  for (byte index = 0; index < rfid.uid.size; index++) {\r\n    if (rfid.uid.uidByte[index] < 0x10) Serial.print(\"0\");\r\n    Serial.print(rfid.uid.uidByte[index], HEX);\r\n    if (index < rfid.uid.size - 1) Serial.print(\":\");\r\n  }\r\n  Serial.println();\r\n  rfid.PICC_HaltA();\r\n  rfid.PCD_StopCrypto1();\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/08-rfid-rc522-02-cek-uid-02-cek-uid-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "09-ldr",
@@ -191,7 +241,8 @@
           "code": "const int LDR = A0;\r\nconst int LAMPU = 8;\r\nconst int BATAS_GELAP = 500;\r\n\r\nvoid setup() {\r\n  pinMode(LAMPU, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  int nilaiCahaya = analogRead(LDR);\r\n  digitalWrite(LAMPU, nilaiCahaya < BATAS_GELAP ? HIGH : LOW);\r\n  delay(200);\r\n}\r\n",
           "path": "/assets/sketches/09-ldr-02-lampu-otomatis-02-lampu-otomatis-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "10-dht11",
@@ -208,8 +259,16 @@
           "filename": "01_Monitor_Suhu_Kelembapan.ino",
           "code": "#include <DHT.h>\r\n\r\n#define PIN_DHT 2\r\n#define JENIS_DHT DHT11\r\nDHT dht(PIN_DHT, JENIS_DHT);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  dht.begin();\r\n}\r\n\r\nvoid loop() {\r\n  float kelembapan = dht.readHumidity();\r\n  float suhu = dht.readTemperature();\r\n\r\n  if (isnan(kelembapan) || isnan(suhu)) {\r\n    Serial.println(\"Gagal membaca DHT11\");\r\n  } else {\r\n    Serial.print(\"Suhu: \");\r\n    Serial.print(suhu);\r\n    Serial.print(\" C | Kelembapan: \");\r\n    Serial.print(kelembapan);\r\n    Serial.println(\" %\");\r\n  }\r\n  delay(2000);\r\n}\r\n",
           "path": "/assets/sketches/10-dht11-01-monitor-suhu-kelembapan-01-monitor-suhu-kelembapan-ino.ino"
+        },
+        {
+          "id": "10-dht11-02-dht11-led-alarm-02-dht11-led-alarm-ino",
+          "title": "DHT11 LED Alarm",
+          "filename": "02_DHT11_LED_Alarm.ino",
+          "code": "#include <DHT.h>\r\n\r\n#define PIN_DHT 2\r\n#define JENIS_DHT DHT11\r\nconst int LED = 13;\r\nconst float BATAS_SUHU = 30.0;\r\n\r\nDHT dht(PIN_DHT, JENIS_DHT);\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n  dht.begin();\r\n}\r\n\r\nvoid loop() {\r\n  float suhu = dht.readTemperature();\r\n  if (isnan(suhu)) {\r\n    Serial.println(\"Gagal membaca DHT11\");\r\n    delay(2000);\r\n    return;\r\n  }\r\n\r\n  Serial.print(\"Suhu: \");\r\n  Serial.print(suhu);\r\n  Serial.println(\" C\");\r\n  digitalWrite(LED, suhu >= BATAS_SUHU ? HIGH : LOW);\r\n  delay(2000);\r\n}\r\n",
+          "path": "/assets/sketches/10-dht11-02-dht11-led-alarm-02-dht11-led-alarm-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "11-soil-moisture",
@@ -234,7 +293,8 @@
           "code": "const int SOIL = A0;\r\nconst int RELAY = 7;\r\nconst int BATAS_KERING = 700;\r\n\r\nvoid setup() {\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, HIGH);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(SOIL);\r\n  bool tanahKering = nilai > BATAS_KERING;\r\n  digitalWrite(RELAY, tanahKering ? LOW : HIGH);\r\n  delay(1000);\r\n}\r\n",
           "path": "/assets/sketches/11-soil-moisture-02-pompa-dengan-relay-02-pompa-dengan-relay-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "12-ds18b20",
@@ -251,8 +311,16 @@
           "filename": "01_Baca_Suhu_Air.ino",
           "code": "#include <OneWire.h>\r\n#include <DallasTemperature.h>\r\n\r\nconst int ONE_WIRE_BUS = 2;\r\nOneWire oneWire(ONE_WIRE_BUS);\r\nDallasTemperature sensor(&oneWire);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  sensor.begin();\r\n}\r\n\r\nvoid loop() {\r\n  sensor.requestTemperatures();\r\n  float suhu = sensor.getTempCByIndex(0);\r\n  Serial.print(\"Suhu: \");\r\n  Serial.print(suhu);\r\n  Serial.println(\" C\");\r\n  delay(1000);\r\n}\r\n",
           "path": "/assets/sketches/12-ds18b20-01-baca-suhu-air-01-baca-suhu-air-ino.ino"
+        },
+        {
+          "id": "12-ds18b20-02-ds18b20-minmax-02-ds18b20-minmax-ino",
+          "title": "DS18B20 MinMax",
+          "filename": "02_DS18B20_MinMax.ino",
+          "code": "#include <OneWire.h>\r\n#include <DallasTemperature.h>\r\n\r\nconst int BUS_SUHU = 2;\r\nOneWire oneWire(BUS_SUHU);\r\nDallasTemperature sensor(&oneWire);\r\nfloat suhuMinimum = 1000;\r\nfloat suhuMaksimum = -1000;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  sensor.begin();\r\n}\r\n\r\nvoid loop() {\r\n  sensor.requestTemperatures();\r\n  float suhu = sensor.getTempCByIndex(0);\r\n  if (suhu == DEVICE_DISCONNECTED_C) {\r\n    Serial.println(\"Sensor tidak terhubung\");\r\n    delay(1000);\r\n    return;\r\n  }\r\n\r\n  suhuMinimum = min(suhuMinimum, suhu);\r\n  suhuMaksimum = max(suhuMaksimum, suhu);\r\n  Serial.print(\"Sekarang: \");\r\n  Serial.print(suhu);\r\n  Serial.print(\" C | Min: \");\r\n  Serial.print(suhuMinimum);\r\n  Serial.print(\" C | Max: \");\r\n  Serial.print(suhuMaksimum);\r\n  Serial.println(\" C\");\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/12-ds18b20-02-ds18b20-minmax-02-ds18b20-minmax-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "13-rain-sensor",
@@ -269,8 +337,16 @@
           "filename": "01_Deteksi_Hujan.ino",
           "code": "const int RAIN = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(RAIN);\r\n  Serial.print(\"Nilai sensor hujan: \");\r\n  Serial.println(nilai);\r\n  delay(500);\r\n}\r\n",
           "path": "/assets/sketches/13-rain-sensor-01-deteksi-hujan-01-deteksi-hujan-ino.ino"
+        },
+        {
+          "id": "13-rain-sensor-02-rain-led-02-rain-led-ino",
+          "title": "Rain LED",
+          "filename": "02_Rain_LED.ino",
+          "code": "const int SENSOR_HUJAN = A0;\r\nconst int LED = 13;\r\nconst int BATAS_HUJAN = 600;\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilaiHujan = analogRead(SENSOR_HUJAN);\r\n  bool hujanTerdeteksi = nilaiHujan < BATAS_HUJAN;\r\n  digitalWrite(LED, hujanTerdeteksi ? HIGH : LOW);\r\n\r\n  Serial.print(\"Nilai sensor hujan: \");\r\n  Serial.println(nilaiHujan);\r\n  delay(300);\r\n}\r\n",
+          "path": "/assets/sketches/13-rain-sensor-02-rain-led-02-rain-led-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "14-sound-sensor",
@@ -287,8 +363,16 @@
           "filename": "01_Deteksi_Suara.ino",
           "code": "const int SOUND = 2;\r\nconst int LED = 13;\r\n\r\nvoid setup() {\r\n  pinMode(SOUND, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int suara = digitalRead(SOUND);\r\n  digitalWrite(LED, suara == HIGH ? HIGH : LOW);\r\n  Serial.println(suara == HIGH ? \"Suara terdeteksi\" : \"Hening\");\r\n  delay(100);\r\n}\r\n",
           "path": "/assets/sketches/14-sound-sensor-01-deteksi-suara-01-deteksi-suara-ino.ino"
+        },
+        {
+          "id": "14-sound-sensor-02-sound-buzzer-02-sound-buzzer-ino",
+          "title": "Sound Buzzer",
+          "filename": "02_Sound_Buzzer.ino",
+          "code": "const int SENSOR_SUARA = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(SENSOR_SUARA, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool suaraTerdeteksi = digitalRead(SENSOR_SUARA) == HIGH;\r\n  if (suaraTerdeteksi) {\r\n    tone(BUZZER, 1400, 120);\r\n    Serial.println(\"Suara terdeteksi\");\r\n  }\r\n  delay(150);\r\n}\r\n",
+          "path": "/assets/sketches/14-sound-sensor-02-sound-buzzer-02-sound-buzzer-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "15-flame-sensor",
@@ -305,8 +389,16 @@
           "filename": "01_Alarm_Api.ino",
           "code": "const int FLAME = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(FLAME, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool apiTerdeteksi = digitalRead(FLAME) == LOW;\r\n  digitalWrite(BUZZER, apiTerdeteksi ? HIGH : LOW);\r\n  Serial.println(apiTerdeteksi ? \"API TERDETEKSI\" : \"Aman\");\r\n  delay(200);\r\n}\r\n",
           "path": "/assets/sketches/15-flame-sensor-01-alarm-api-01-alarm-api-ino.ino"
+        },
+        {
+          "id": "15-flame-sensor-02-alarm-api-led-02-alarm-api-led-ino",
+          "title": "Alarm Api LED",
+          "filename": "02_Alarm_Api_LED.ino",
+          "code": "const int SENSOR_API = 2;\r\nconst int LED = 13;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(SENSOR_API, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool apiTerdeteksi = digitalRead(SENSOR_API) == LOW;\r\n  digitalWrite(LED, apiTerdeteksi ? HIGH : LOW);\r\n\r\n  if (apiTerdeteksi) {\r\n    tone(BUZZER, 1600);\r\n    Serial.println(\"Peringatan: api terdeteksi\");\r\n  } else {\r\n    noTone(BUZZER);\r\n    Serial.println(\"Kondisi aman\");\r\n  }\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/15-flame-sensor-02-alarm-api-led-02-alarm-api-led-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "16-mq2-gas-asap",
@@ -331,7 +423,8 @@
           "code": "const int MQ2 = A0;\r\nconst int BUZZER = 8;\r\nconst int BATAS_ASAP = 450;\r\n\r\nvoid setup() {\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(MQ2);\r\n  bool asapTinggi = nilai > BATAS_ASAP;\r\n  digitalWrite(BUZZER, asapTinggi ? HIGH : LOW);\r\n  Serial.println(asapTinggi ? \"PERINGATAN ASAP\" : \"Udara normal\");\r\n  delay(300);\r\n}\r\n",
           "path": "/assets/sketches/16-mq2-gas-asap-02-alarm-asap-02-alarm-asap-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "17-sw420-getaran",
@@ -348,8 +441,16 @@
           "filename": "01_Alarm_Getaran.ino",
           "code": "const int GETARAN = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(GETARAN, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool adaGetaran = digitalRead(GETARAN) == HIGH;\r\n  digitalWrite(BUZZER, adaGetaran ? HIGH : LOW);\r\n  Serial.println(adaGetaran ? \"Getaran terdeteksi\" : \"Tidak ada getaran\");\r\n  delay(100);\r\n}\r\n",
           "path": "/assets/sketches/17-sw420-getaran-01-alarm-getaran-01-alarm-getaran-ino.ino"
+        },
+        {
+          "id": "17-sw420-getaran-02-penghitung-getaran-02-penghitung-getaran-ino",
+          "title": "Penghitung Getaran",
+          "filename": "02_Penghitung_Getaran.ino",
+          "code": "const int SENSOR_GETARAN = 2;\r\nconst int LED = 13;\r\nunsigned long jumlahGetaran = 0;\r\nint statusSebelumnya = LOW;\r\n\r\nvoid setup() {\r\n  pinMode(SENSOR_GETARAN, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int statusSekarang = digitalRead(SENSOR_GETARAN);\r\n  if (statusSekarang == HIGH && statusSebelumnya == LOW) {\r\n    jumlahGetaran++;\r\n    digitalWrite(LED, HIGH);\r\n    Serial.print(\"Jumlah getaran: \");\r\n    Serial.println(jumlahGetaran);\r\n  }\r\n  if (statusSekarang == LOW) digitalWrite(LED, LOW);\r\n  statusSebelumnya = statusSekarang;\r\n  delay(20);\r\n}\r\n",
+          "path": "/assets/sketches/17-sw420-getaran-02-penghitung-getaran-02-penghitung-getaran-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "18-relay-5v",
@@ -366,8 +467,16 @@
           "filename": "01_Nyalakan_Matikan_Relay.ino",
           "code": "const int RELAY = 7;\r\n\r\nvoid setup() {\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, HIGH);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(RELAY, LOW);\r\n  delay(2000);\r\n  digitalWrite(RELAY, HIGH);\r\n  delay(2000);\r\n}\r\n",
           "path": "/assets/sketches/18-relay-5v-01-nyalakan-matikan-relay-01-nyalakan-matikan-relay-ino.ino"
+        },
+        {
+          "id": "18-relay-5v-02-relay-tombol-02-relay-tombol-ino",
+          "title": "Relay Tombol",
+          "filename": "02_Relay_Tombol.ino",
+          "code": "const int TOMBOL = 2;\r\nconst int RELAY = 7;\r\nbool relayMenyala = false;\r\nint tombolTerakhir = HIGH;\r\n\r\nvoid setup() {\r\n  pinMode(TOMBOL, INPUT_PULLUP);\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, LOW);\r\n}\r\n\r\nvoid loop() {\r\n  int tombolSekarang = digitalRead(TOMBOL);\r\n  if (tombolTerakhir == HIGH && tombolSekarang == LOW) {\r\n    relayMenyala = !relayMenyala;\r\n    digitalWrite(RELAY, relayMenyala ? HIGH : LOW);\r\n    delay(40);\r\n  }\r\n  tombolTerakhir = tombolSekarang;\r\n}\r\n",
+          "path": "/assets/sketches/18-relay-5v-02-relay-tombol-02-relay-tombol-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     },
     {
       "id": "19-projek-gabungan",
@@ -476,6 +585,272 @@
           "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\n// Inisialisasi LCD pada alamat 0x27 dengan ukuran 16x2\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\n// Deklarasi pin untuk sensor ultrasonik\r\nconst int trigPin = 9;\r\nconst int echoPin = 10;\r\n\r\nvoid setup() {\r\n  // Atur mode pin untuk sensor\r\n  pinMode(trigPin, OUTPUT);\r\n  pinMode(echoPin, INPUT);\r\n\r\n  // Mulai komunikasi LCD\r\n  lcd.init();\r\n  lcd.backlight();\r\n  \r\n  // Tampilkan pesan awal\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Sensor Jarak\");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(\"Memulai...\");\r\n  delay(2000);\r\n  lcd.clear();\r\n}\r\n\r\nvoid loop() {\r\n  long duration;\r\n  int distance;\r\n\r\n  // Pastikan pin Trig dalam keadaan LOW sebelum menembakkan sinyal\r\n  digitalWrite(trigPin, LOW);\r\n  delayMicroseconds(2);\r\n  \r\n  // Tembakkan sinyal ultrasonik selama 10 mikrodetik\r\n  digitalWrite(trigPin, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(trigPin, LOW);\r\n\r\n  // Baca durasi pantulan suara pada pin Echo\r\n  duration = pulseIn(echoPin, HIGH);\r\n\r\n  // Hitung jarak dalam centimeter (kecepatan suara = 340 m/s atau 0.034 cm/us)\r\n  distance = duration * 0.034 / 2;\r\n\r\n  // Tampilkan hasil jarak ke LCD\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Jarak saat ini:\");\r\n  \r\n  lcd.setCursor(0, 1);\r\n  lcd.print(distance);\r\n  lcd.print(\" cm    \"); // Tambahan spasi di belakang untuk menghapus sisa karakter lama\r\n\r\n  // Jeda 0.5 detik sebelum membaca ulang\r\n  delay(500); \r\n}",
           "path": "/assets/sketches/19-projek-gabungan-lcd-with-ultrasonik-only-14-ultrasonik-lcd-ino.ino"
         }
+      ],
+      "relatedSketches": [
+        {
+          "id": "19-projek-gabungan-terkait-02-servo-sg90-01-sudut-servo-01-sudut-servo-ino",
+          "title": "Servo SG90 · Sudut Servo",
+          "filename": "01_Sudut_Servo.ino",
+          "code": "#include <Servo.h>\r\n\r\nServo servo;\r\n\r\nvoid setup() {\r\n  servo.attach(9);\r\n  servo.write(0);\r\n  delay(1000);\r\n}\r\n\r\nvoid loop() {\r\n  servo.write(0);\r\n  delay(1000);\r\n  servo.write(90);\r\n  delay(1000);\r\n  servo.write(180);\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/02-servo-sg90-01-sudut-servo-01-sudut-servo-ino.ino",
+          "sourceTitle": "Servo SG90"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-02-servo-sg90-02-sapu-bolak-balik-02-sapu-bolak-balik-ino",
+          "title": "Servo SG90 · Sapu Bolak Balik",
+          "filename": "02_Sapu_Bolak_Balik.ino",
+          "code": "#include <Servo.h>\r\n\r\nServo servo;\r\n\r\nvoid setup() {\r\n  servo.attach(9);\r\n}\r\n\r\nvoid loop() {\r\n  for (int sudut = 0; sudut <= 180; sudut++) {\r\n    servo.write(sudut);\r\n    delay(15);\r\n  }\r\n\r\n  for (int sudut = 180; sudut >= 0; sudut--) {\r\n    servo.write(sudut);\r\n    delay(15);\r\n  }\r\n}\r\n",
+          "path": "/assets/sketches/02-servo-sg90-02-sapu-bolak-balik-02-sapu-bolak-balik-ino.ino",
+          "sourceTitle": "Servo SG90"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-04-ultrasonic-hy-srf05-01-baca-jarak-serial-01-baca-jarak-serial-ino",
+          "title": "Ultrasonic HY-SRF05 · Baca Jarak Serial",
+          "filename": "01_Baca_Jarak_Serial.ino",
+          "code": "const int TRIG = 9;\r\nconst int ECHO = 10;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  float jarak = durasi * 0.0343 / 2;\r\n\r\n  if (durasi == 0) {\r\n    Serial.println(\"Tidak ada pembacaan\");\r\n  } else {\r\n    Serial.print(\"Jarak: \");\r\n    Serial.print(jarak);\r\n    Serial.println(\" cm\");\r\n  }\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/04-ultrasonic-hy-srf05-01-baca-jarak-serial-01-baca-jarak-serial-ino.ino",
+          "sourceTitle": "Ultrasonic HY-SRF05"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-04-ultrasonic-hy-srf05-02-alarm-jarak-02-alarm-jarak-ino",
+          "title": "Ultrasonic HY-SRF05 · Alarm Jarak",
+          "filename": "02_Alarm_Jarak.ino",
+          "code": "const int TRIG = 9;\r\nconst int ECHO = 10;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(TRIG, OUTPUT);\r\n  pinMode(ECHO, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(TRIG, LOW);\r\n  delayMicroseconds(2);\r\n  digitalWrite(TRIG, HIGH);\r\n  delayMicroseconds(10);\r\n  digitalWrite(TRIG, LOW);\r\n\r\n  long durasi = pulseIn(ECHO, HIGH, 30000);\r\n  float jarak = durasi * 0.0343 / 2;\r\n  Serial.print(\"Jarak: \");\r\n  Serial.print(jarak);\r\n  Serial.println(\" cm\");\r\n\r\n  if (jarak > 0 && jarak < 15) tone(BUZZER, 1200);\r\n  else noTone(BUZZER);\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/04-ultrasonic-hy-srf05-02-alarm-jarak-02-alarm-jarak-ino.ino",
+          "sourceTitle": "Ultrasonic HY-SRF05"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-03-lcd-1602-i2c-01-selamat-datang-01-selamat-datang-ino",
+          "title": "LCD 1602 I2C · Selamat Datang",
+          "filename": "01_Selamat_Datang.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  lcd.init();\r\n  lcd.backlight();\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Selamat Datang\");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(\"Belajar Arduino\");\r\n}\r\n\r\nvoid loop() {\r\n}\r\n",
+          "path": "/assets/sketches/03-lcd-1602-i2c-01-selamat-datang-01-selamat-datang-ino.ino",
+          "sourceTitle": "LCD 1602 I2C"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-03-lcd-1602-i2c-02-running-text-02-running-text-ino",
+          "title": "LCD 1602 I2C · Running Text",
+          "filename": "02_Running_Text.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nString pesan = \"  BELAJAR ARDUINO  \";\r\n\r\nvoid setup() {\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  for (int posisi = 16; posisi > -pesan.length(); posisi--) {\r\n    lcd.clear();\r\n    lcd.setCursor(posisi, 0);\r\n    lcd.print(pesan);\r\n    delay(250);\r\n  }\r\n}\r\n",
+          "path": "/assets/sketches/03-lcd-1602-i2c-02-running-text-02-running-text-ino.ino",
+          "sourceTitle": "LCD 1602 I2C"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-03-lcd-1602-i2c-03-baca-potensiometer-03-baca-potensiometer-ino",
+          "title": "LCD 1602 I2C · Baca Potensiometer",
+          "filename": "03_Baca_Potensiometer.ino",
+          "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\n\r\nvoid setup() {\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(A0);\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"Nilai A0:       \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(nilai);\r\n  lcd.print(\"        \");\r\n  delay(250);\r\n}\r\n",
+          "path": "/assets/sketches/03-lcd-1602-i2c-03-baca-potensiometer-03-baca-potensiometer-ino.ino",
+          "sourceTitle": "LCD 1602 I2C"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-11-soil-moisture-01-baca-kelembapan-tanah-01-baca-kelembapan-tanah-ino",
+          "title": "Soil Moisture · Baca Kelembapan Tanah",
+          "filename": "01_Baca_Kelembapan_Tanah.ino",
+          "code": "const int SOIL = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(SOIL);\r\n  Serial.print(\"Nilai tanah: \");\r\n  Serial.println(nilai);\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/11-soil-moisture-01-baca-kelembapan-tanah-01-baca-kelembapan-tanah-ino.ino",
+          "sourceTitle": "Soil Moisture"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-11-soil-moisture-02-pompa-dengan-relay-02-pompa-dengan-relay-ino",
+          "title": "Soil Moisture · Pompa Dengan Relay",
+          "filename": "02_Pompa_Dengan_Relay.ino",
+          "code": "const int SOIL = A0;\r\nconst int RELAY = 7;\r\nconst int BATAS_KERING = 700;\r\n\r\nvoid setup() {\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, HIGH);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(SOIL);\r\n  bool tanahKering = nilai > BATAS_KERING;\r\n  digitalWrite(RELAY, tanahKering ? LOW : HIGH);\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/11-soil-moisture-02-pompa-dengan-relay-02-pompa-dengan-relay-ino.ino",
+          "sourceTitle": "Soil Moisture"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-05-buzzer-5v-01-bunyi-alarm-01-bunyi-alarm-ino",
+          "title": "Buzzer 5V · Bunyi Alarm",
+          "filename": "01_Bunyi_Alarm.ino",
+          "code": "const int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(BUZZER, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(BUZZER, HIGH);\r\n  delay(300);\r\n  digitalWrite(BUZZER, LOW);\r\n  delay(700);\r\n}\r\n",
+          "path": "/assets/sketches/05-buzzer-5v-01-bunyi-alarm-01-bunyi-alarm-ino.ino",
+          "sourceTitle": "Buzzer 5V"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-05-buzzer-5v-02-buzzer-tombol-02-buzzer-tombol-ino",
+          "title": "Buzzer 5V · Buzzer Tombol",
+          "filename": "02_Buzzer_Tombol.ino",
+          "code": "const int TOMBOL = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(TOMBOL, INPUT_PULLUP);\r\n  pinMode(BUZZER, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  if (digitalRead(TOMBOL) == LOW) {\r\n    tone(BUZZER, 1000);\r\n  } else {\r\n    noTone(BUZZER);\r\n  }\r\n}\r\n",
+          "path": "/assets/sketches/05-buzzer-5v-02-buzzer-tombol-02-buzzer-tombol-ino.ino",
+          "sourceTitle": "Buzzer 5V"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-06-led-5mm-01-led-bergantian-01-led-bergantian-ino",
+          "title": "LED 5mm · LED Bergantian",
+          "filename": "01_LED_Bergantian.ino",
+          "code": "const int LED_MERAH = 6;\r\nconst int LED_HIJAU = 7;\r\n\r\nvoid setup() {\r\n  pinMode(LED_MERAH, OUTPUT);\r\n  pinMode(LED_HIJAU, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(LED_MERAH, HIGH);\r\n  digitalWrite(LED_HIJAU, LOW);\r\n  delay(500);\r\n  digitalWrite(LED_MERAH, LOW);\r\n  digitalWrite(LED_HIJAU, HIGH);\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/06-led-5mm-01-led-bergantian-01-led-bergantian-ino.ino",
+          "sourceTitle": "LED 5mm"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-06-led-5mm-02-led-pwm-02-led-pwm-ino",
+          "title": "LED 5mm · LED PWM",
+          "filename": "02_LED_PWM.ino",
+          "code": "const int POTENSIOMETER = A0;\r\nconst int LED = 9;\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilaiPotensiometer = analogRead(POTENSIOMETER);\r\n  int terang = map(nilaiPotensiometer, 0, 1023, 0, 255);\r\n  analogWrite(LED, terang);\r\n\r\n  Serial.print(\"Kecerahan: \");\r\n  Serial.println(terang);\r\n  delay(50);\r\n}\r\n",
+          "path": "/assets/sketches/06-led-5mm-02-led-pwm-02-led-pwm-ino.ino",
+          "sourceTitle": "LED 5mm"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-09-ldr-01-baca-cahaya-01-baca-cahaya-ino",
+          "title": "LDR · Baca Cahaya",
+          "filename": "01_Baca_Cahaya.ino",
+          "code": "const int LDR = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  Serial.print(\"Nilai cahaya: \");\r\n  Serial.println(analogRead(LDR));\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/09-ldr-01-baca-cahaya-01-baca-cahaya-ino.ino",
+          "sourceTitle": "LDR"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-09-ldr-02-lampu-otomatis-02-lampu-otomatis-ino",
+          "title": "LDR · Lampu Otomatis",
+          "filename": "02_Lampu_Otomatis.ino",
+          "code": "const int LDR = A0;\r\nconst int LAMPU = 8;\r\nconst int BATAS_GELAP = 500;\r\n\r\nvoid setup() {\r\n  pinMode(LAMPU, OUTPUT);\r\n}\r\n\r\nvoid loop() {\r\n  int nilaiCahaya = analogRead(LDR);\r\n  digitalWrite(LAMPU, nilaiCahaya < BATAS_GELAP ? HIGH : LOW);\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/09-ldr-02-lampu-otomatis-02-lampu-otomatis-ino.ino",
+          "sourceTitle": "LDR"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-10-dht11-01-monitor-suhu-kelembapan-01-monitor-suhu-kelembapan-ino",
+          "title": "DHT11 · Monitor Suhu Kelembapan",
+          "filename": "01_Monitor_Suhu_Kelembapan.ino",
+          "code": "#include <DHT.h>\r\n\r\n#define PIN_DHT 2\r\n#define JENIS_DHT DHT11\r\nDHT dht(PIN_DHT, JENIS_DHT);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  dht.begin();\r\n}\r\n\r\nvoid loop() {\r\n  float kelembapan = dht.readHumidity();\r\n  float suhu = dht.readTemperature();\r\n\r\n  if (isnan(kelembapan) || isnan(suhu)) {\r\n    Serial.println(\"Gagal membaca DHT11\");\r\n  } else {\r\n    Serial.print(\"Suhu: \");\r\n    Serial.print(suhu);\r\n    Serial.print(\" C | Kelembapan: \");\r\n    Serial.print(kelembapan);\r\n    Serial.println(\" %\");\r\n  }\r\n  delay(2000);\r\n}\r\n",
+          "path": "/assets/sketches/10-dht11-01-monitor-suhu-kelembapan-01-monitor-suhu-kelembapan-ino.ino",
+          "sourceTitle": "DHT11"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-10-dht11-02-dht11-led-alarm-02-dht11-led-alarm-ino",
+          "title": "DHT11 · DHT11 LED Alarm",
+          "filename": "02_DHT11_LED_Alarm.ino",
+          "code": "#include <DHT.h>\r\n\r\n#define PIN_DHT 2\r\n#define JENIS_DHT DHT11\r\nconst int LED = 13;\r\nconst float BATAS_SUHU = 30.0;\r\n\r\nDHT dht(PIN_DHT, JENIS_DHT);\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n  dht.begin();\r\n}\r\n\r\nvoid loop() {\r\n  float suhu = dht.readTemperature();\r\n  if (isnan(suhu)) {\r\n    Serial.println(\"Gagal membaca DHT11\");\r\n    delay(2000);\r\n    return;\r\n  }\r\n\r\n  Serial.print(\"Suhu: \");\r\n  Serial.print(suhu);\r\n  Serial.println(\" C\");\r\n  digitalWrite(LED, suhu >= BATAS_SUHU ? HIGH : LOW);\r\n  delay(2000);\r\n}\r\n",
+          "path": "/assets/sketches/10-dht11-02-dht11-led-alarm-02-dht11-led-alarm-ino.ino",
+          "sourceTitle": "DHT11"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-13-rain-sensor-01-deteksi-hujan-01-deteksi-hujan-ino",
+          "title": "Rain Sensor · Deteksi Hujan",
+          "filename": "01_Deteksi_Hujan.ino",
+          "code": "const int RAIN = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(RAIN);\r\n  Serial.print(\"Nilai sensor hujan: \");\r\n  Serial.println(nilai);\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/13-rain-sensor-01-deteksi-hujan-01-deteksi-hujan-ino.ino",
+          "sourceTitle": "Rain Sensor"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-13-rain-sensor-02-rain-led-02-rain-led-ino",
+          "title": "Rain Sensor · Rain LED",
+          "filename": "02_Rain_LED.ino",
+          "code": "const int SENSOR_HUJAN = A0;\r\nconst int LED = 13;\r\nconst int BATAS_HUJAN = 600;\r\n\r\nvoid setup() {\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilaiHujan = analogRead(SENSOR_HUJAN);\r\n  bool hujanTerdeteksi = nilaiHujan < BATAS_HUJAN;\r\n  digitalWrite(LED, hujanTerdeteksi ? HIGH : LOW);\r\n\r\n  Serial.print(\"Nilai sensor hujan: \");\r\n  Serial.println(nilaiHujan);\r\n  delay(300);\r\n}\r\n",
+          "path": "/assets/sketches/13-rain-sensor-02-rain-led-02-rain-led-ino.ino",
+          "sourceTitle": "Rain Sensor"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-15-flame-sensor-01-alarm-api-01-alarm-api-ino",
+          "title": "Flame Sensor · Alarm Api",
+          "filename": "01_Alarm_Api.ino",
+          "code": "const int FLAME = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(FLAME, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool apiTerdeteksi = digitalRead(FLAME) == LOW;\r\n  digitalWrite(BUZZER, apiTerdeteksi ? HIGH : LOW);\r\n  Serial.println(apiTerdeteksi ? \"API TERDETEKSI\" : \"Aman\");\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/15-flame-sensor-01-alarm-api-01-alarm-api-ino.ino",
+          "sourceTitle": "Flame Sensor"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-15-flame-sensor-02-alarm-api-led-02-alarm-api-led-ino",
+          "title": "Flame Sensor · Alarm Api LED",
+          "filename": "02_Alarm_Api_LED.ino",
+          "code": "const int SENSOR_API = 2;\r\nconst int LED = 13;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(SENSOR_API, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool apiTerdeteksi = digitalRead(SENSOR_API) == LOW;\r\n  digitalWrite(LED, apiTerdeteksi ? HIGH : LOW);\r\n\r\n  if (apiTerdeteksi) {\r\n    tone(BUZZER, 1600);\r\n    Serial.println(\"Peringatan: api terdeteksi\");\r\n  } else {\r\n    noTone(BUZZER);\r\n    Serial.println(\"Kondisi aman\");\r\n  }\r\n  delay(200);\r\n}\r\n",
+          "path": "/assets/sketches/15-flame-sensor-02-alarm-api-led-02-alarm-api-led-ino.ino",
+          "sourceTitle": "Flame Sensor"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-16-mq2-gas-asap-01-baca-gas-01-baca-gas-ino",
+          "title": "MQ2 Gas Asap · Baca Gas",
+          "filename": "01_Baca_Gas.ino",
+          "code": "const int MQ2 = A0;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(MQ2);\r\n  Serial.print(\"Nilai MQ-2: \");\r\n  Serial.println(nilai);\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/16-mq2-gas-asap-01-baca-gas-01-baca-gas-ino.ino",
+          "sourceTitle": "MQ2 Gas Asap"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-16-mq2-gas-asap-02-alarm-asap-02-alarm-asap-ino",
+          "title": "MQ2 Gas Asap · Alarm Asap",
+          "filename": "02_Alarm_Asap.ino",
+          "code": "const int MQ2 = A0;\r\nconst int BUZZER = 8;\r\nconst int BATAS_ASAP = 450;\r\n\r\nvoid setup() {\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int nilai = analogRead(MQ2);\r\n  bool asapTinggi = nilai > BATAS_ASAP;\r\n  digitalWrite(BUZZER, asapTinggi ? HIGH : LOW);\r\n  Serial.println(asapTinggi ? \"PERINGATAN ASAP\" : \"Udara normal\");\r\n  delay(300);\r\n}\r\n",
+          "path": "/assets/sketches/16-mq2-gas-asap-02-alarm-asap-02-alarm-asap-ino.ino",
+          "sourceTitle": "MQ2 Gas Asap"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-14-sound-sensor-01-deteksi-suara-01-deteksi-suara-ino",
+          "title": "Sound Sensor · Deteksi Suara",
+          "filename": "01_Deteksi_Suara.ino",
+          "code": "const int SOUND = 2;\r\nconst int LED = 13;\r\n\r\nvoid setup() {\r\n  pinMode(SOUND, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int suara = digitalRead(SOUND);\r\n  digitalWrite(LED, suara == HIGH ? HIGH : LOW);\r\n  Serial.println(suara == HIGH ? \"Suara terdeteksi\" : \"Hening\");\r\n  delay(100);\r\n}\r\n",
+          "path": "/assets/sketches/14-sound-sensor-01-deteksi-suara-01-deteksi-suara-ino.ino",
+          "sourceTitle": "Sound Sensor"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-14-sound-sensor-02-sound-buzzer-02-sound-buzzer-ino",
+          "title": "Sound Sensor · Sound Buzzer",
+          "filename": "02_Sound_Buzzer.ino",
+          "code": "const int SENSOR_SUARA = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(SENSOR_SUARA, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool suaraTerdeteksi = digitalRead(SENSOR_SUARA) == HIGH;\r\n  if (suaraTerdeteksi) {\r\n    tone(BUZZER, 1400, 120);\r\n    Serial.println(\"Suara terdeteksi\");\r\n  }\r\n  delay(150);\r\n}\r\n",
+          "path": "/assets/sketches/14-sound-sensor-02-sound-buzzer-02-sound-buzzer-ino.ino",
+          "sourceTitle": "Sound Sensor"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-18-relay-5v-01-nyalakan-matikan-relay-01-nyalakan-matikan-relay-ino",
+          "title": "Relay 5V · Nyalakan Matikan Relay",
+          "filename": "01_Nyalakan_Matikan_Relay.ino",
+          "code": "const int RELAY = 7;\r\n\r\nvoid setup() {\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, HIGH);\r\n}\r\n\r\nvoid loop() {\r\n  digitalWrite(RELAY, LOW);\r\n  delay(2000);\r\n  digitalWrite(RELAY, HIGH);\r\n  delay(2000);\r\n}\r\n",
+          "path": "/assets/sketches/18-relay-5v-01-nyalakan-matikan-relay-01-nyalakan-matikan-relay-ino.ino",
+          "sourceTitle": "Relay 5V"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-18-relay-5v-02-relay-tombol-02-relay-tombol-ino",
+          "title": "Relay 5V · Relay Tombol",
+          "filename": "02_Relay_Tombol.ino",
+          "code": "const int TOMBOL = 2;\r\nconst int RELAY = 7;\r\nbool relayMenyala = false;\r\nint tombolTerakhir = HIGH;\r\n\r\nvoid setup() {\r\n  pinMode(TOMBOL, INPUT_PULLUP);\r\n  pinMode(RELAY, OUTPUT);\r\n  digitalWrite(RELAY, LOW);\r\n}\r\n\r\nvoid loop() {\r\n  int tombolSekarang = digitalRead(TOMBOL);\r\n  if (tombolTerakhir == HIGH && tombolSekarang == LOW) {\r\n    relayMenyala = !relayMenyala;\r\n    digitalWrite(RELAY, relayMenyala ? HIGH : LOW);\r\n    delay(40);\r\n  }\r\n  tombolTerakhir = tombolSekarang;\r\n}\r\n",
+          "path": "/assets/sketches/18-relay-5v-02-relay-tombol-02-relay-tombol-ino.ino",
+          "sourceTitle": "Relay 5V"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-17-sw420-getaran-01-alarm-getaran-01-alarm-getaran-ino",
+          "title": "SW420 Getaran · Alarm Getaran",
+          "filename": "01_Alarm_Getaran.ino",
+          "code": "const int GETARAN = 2;\r\nconst int BUZZER = 8;\r\n\r\nvoid setup() {\r\n  pinMode(GETARAN, INPUT);\r\n  pinMode(BUZZER, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  bool adaGetaran = digitalRead(GETARAN) == HIGH;\r\n  digitalWrite(BUZZER, adaGetaran ? HIGH : LOW);\r\n  Serial.println(adaGetaran ? \"Getaran terdeteksi\" : \"Tidak ada getaran\");\r\n  delay(100);\r\n}\r\n",
+          "path": "/assets/sketches/17-sw420-getaran-01-alarm-getaran-01-alarm-getaran-ino.ino",
+          "sourceTitle": "SW420 Getaran"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-17-sw420-getaran-02-penghitung-getaran-02-penghitung-getaran-ino",
+          "title": "SW420 Getaran · Penghitung Getaran",
+          "filename": "02_Penghitung_Getaran.ino",
+          "code": "const int SENSOR_GETARAN = 2;\r\nconst int LED = 13;\r\nunsigned long jumlahGetaran = 0;\r\nint statusSebelumnya = LOW;\r\n\r\nvoid setup() {\r\n  pinMode(SENSOR_GETARAN, INPUT);\r\n  pinMode(LED, OUTPUT);\r\n  Serial.begin(9600);\r\n}\r\n\r\nvoid loop() {\r\n  int statusSekarang = digitalRead(SENSOR_GETARAN);\r\n  if (statusSekarang == HIGH && statusSebelumnya == LOW) {\r\n    jumlahGetaran++;\r\n    digitalWrite(LED, HIGH);\r\n    Serial.print(\"Jumlah getaran: \");\r\n    Serial.println(jumlahGetaran);\r\n  }\r\n  if (statusSekarang == LOW) digitalWrite(LED, LOW);\r\n  statusSebelumnya = statusSekarang;\r\n  delay(20);\r\n}\r\n",
+          "path": "/assets/sketches/17-sw420-getaran-02-penghitung-getaran-02-penghitung-getaran-ino.ino",
+          "sourceTitle": "SW420 Getaran"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-08-rfid-rc522-01-baca-kartu-01-baca-kartu-ino",
+          "title": "RFID RC522 · Baca Kartu",
+          "filename": "01_Baca_Kartu.ino",
+          "code": "#include <SPI.h>\r\n#include <MFRC522.h>\r\n\r\nconst int SS_PIN = 10;\r\nconst int RST_PIN = 9;\r\nMFRC522 rfid(SS_PIN, RST_PIN);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  SPI.begin();\r\n  rfid.PCD_Init();\r\n  Serial.println(\"Tempelkan kartu RFID...\");\r\n}\r\n\r\nvoid loop() {\r\n  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {\r\n    return;\r\n  }\r\n\r\n  Serial.print(\"UID: \");\r\n  for (byte i = 0; i < rfid.uid.size; i++) {\r\n    if (rfid.uid.uidByte[i] < 0x10) {\r\n      Serial.print(\"0\");\r\n    }\r\n    Serial.print(rfid.uid.uidByte[i], HEX);\r\n    Serial.print(\" \");\r\n  }\r\n  Serial.println();\r\n  rfid.PICC_HaltA();\r\n  rfid.PCD_StopCrypto1();\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/08-rfid-rc522-01-baca-kartu-01-baca-kartu-ino.ino",
+          "sourceTitle": "RFID RC522"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-08-rfid-rc522-02-cek-uid-02-cek-uid-ino",
+          "title": "RFID RC522 · Cek UID",
+          "filename": "02_Cek_UID.ino",
+          "code": "#include <SPI.h>\r\n#include <MFRC522.h>\r\n\r\nconst int PIN_SS = 10;\r\nconst int PIN_RST = 9;\r\nMFRC522 rfid(PIN_SS, PIN_RST);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  SPI.begin();\r\n  rfid.PCD_Init();\r\n  Serial.println(\"Tempelkan kartu RFID\");\r\n}\r\n\r\nvoid loop() {\r\n  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) return;\r\n\r\n  Serial.print(\"UID kartu: \");\r\n  for (byte index = 0; index < rfid.uid.size; index++) {\r\n    if (rfid.uid.uidByte[index] < 0x10) Serial.print(\"0\");\r\n    Serial.print(rfid.uid.uidByte[index], HEX);\r\n    if (index < rfid.uid.size - 1) Serial.print(\":\");\r\n  }\r\n  Serial.println();\r\n  rfid.PICC_HaltA();\r\n  rfid.PCD_StopCrypto1();\r\n  delay(500);\r\n}\r\n",
+          "path": "/assets/sketches/08-rfid-rc522-02-cek-uid-02-cek-uid-ino.ino",
+          "sourceTitle": "RFID RC522"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-12-ds18b20-01-baca-suhu-air-01-baca-suhu-air-ino",
+          "title": "DS18B20 · Baca Suhu Air",
+          "filename": "01_Baca_Suhu_Air.ino",
+          "code": "#include <OneWire.h>\r\n#include <DallasTemperature.h>\r\n\r\nconst int ONE_WIRE_BUS = 2;\r\nOneWire oneWire(ONE_WIRE_BUS);\r\nDallasTemperature sensor(&oneWire);\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  sensor.begin();\r\n}\r\n\r\nvoid loop() {\r\n  sensor.requestTemperatures();\r\n  float suhu = sensor.getTempCByIndex(0);\r\n  Serial.print(\"Suhu: \");\r\n  Serial.print(suhu);\r\n  Serial.println(\" C\");\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/12-ds18b20-01-baca-suhu-air-01-baca-suhu-air-ino.ino",
+          "sourceTitle": "DS18B20"
+        },
+        {
+          "id": "19-projek-gabungan-terkait-12-ds18b20-02-ds18b20-minmax-02-ds18b20-minmax-ino",
+          "title": "DS18B20 · DS18B20 MinMax",
+          "filename": "02_DS18B20_MinMax.ino",
+          "code": "#include <OneWire.h>\r\n#include <DallasTemperature.h>\r\n\r\nconst int BUS_SUHU = 2;\r\nOneWire oneWire(BUS_SUHU);\r\nDallasTemperature sensor(&oneWire);\r\nfloat suhuMinimum = 1000;\r\nfloat suhuMaksimum = -1000;\r\n\r\nvoid setup() {\r\n  Serial.begin(9600);\r\n  sensor.begin();\r\n}\r\n\r\nvoid loop() {\r\n  sensor.requestTemperatures();\r\n  float suhu = sensor.getTempCByIndex(0);\r\n  if (suhu == DEVICE_DISCONNECTED_C) {\r\n    Serial.println(\"Sensor tidak terhubung\");\r\n    delay(1000);\r\n    return;\r\n  }\r\n\r\n  suhuMinimum = min(suhuMinimum, suhu);\r\n  suhuMaksimum = max(suhuMaksimum, suhu);\r\n  Serial.print(\"Sekarang: \");\r\n  Serial.print(suhu);\r\n  Serial.print(\" C | Min: \");\r\n  Serial.print(suhuMinimum);\r\n  Serial.print(\" C | Max: \");\r\n  Serial.print(suhuMaksimum);\r\n  Serial.println(\" C\");\r\n  delay(1000);\r\n}\r\n",
+          "path": "/assets/sketches/12-ds18b20-02-ds18b20-minmax-02-ds18b20-minmax-ino.ino",
+          "sourceTitle": "DS18B20"
+        }
       ]
     },
     {
@@ -522,7 +897,8 @@
           "code": "#include <Wire.h>\r\n#include <LiquidCrystal_I2C.h>\r\n#include <DHT.h>\r\n\r\n#define PIN_DHT 2\r\n#define JENIS_DHT DHT11\r\nconst int LDR = A0;\r\nconst int MQ2 = A1;\r\nconst int BUZZER = 8;\r\nconst int BATAS_GAS = 450;\r\nLiquidCrystal_I2C lcd(0x27, 16, 2);\r\nDHT dht(PIN_DHT, JENIS_DHT);\r\n\r\nvoid setup() {\r\n  dht.begin();\r\n  pinMode(BUZZER, OUTPUT);\r\n  lcd.init();\r\n  lcd.backlight();\r\n}\r\n\r\nvoid loop() {\r\n  float suhu = dht.readTemperature();\r\n  int cahaya = analogRead(LDR);\r\n  int gas = analogRead(MQ2);\r\n  bool gasTinggi = gas > BATAS_GAS;\r\n  digitalWrite(BUZZER, gasTinggi ? HIGH : LOW);\r\n\r\n  lcd.setCursor(0, 0);\r\n  lcd.print(\"S:\");\r\n  lcd.print(suhu);\r\n  lcd.print(\"C L:\");\r\n  lcd.print(cahaya);\r\n  lcd.print(\"   \");\r\n  lcd.setCursor(0, 1);\r\n  lcd.print(gasTinggi ? \"Gas tinggi!     \" : \"Gas:\");\r\n  if (!gasTinggi) {\r\n    lcd.print(gas);\r\n    lcd.print(\"          \");\r\n  }\r\n  delay(2000);\r\n}\r\n",
           "path": "/assets/sketches/20-projek-kompleks-05-stasiun-lingkungan-05-stasiun-lingkungan-ino.ino"
         }
-      ]
+      ],
+      "relatedSketches": []
     }
   ]
 }

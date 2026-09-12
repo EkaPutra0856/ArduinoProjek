@@ -7,6 +7,22 @@ const sourceDir = webDir;
 const publicDir = path.join(webDir, "public", "assets");
 const dataDir = path.join(webDir, "data");
 const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
+const projectRelations = {
+  "01-servo-ultrasonic": ["02-servo-sg90", "04-ultrasonic-hy-srf05"],
+  "02-servo-ultrasonic-lcd": ["02-servo-sg90", "03-lcd-1602-i2c", "04-ultrasonic-hy-srf05"],
+  "03-soil-moisture-lcd": ["03-lcd-1602-i2c", "11-soil-moisture"],
+  "04-ultrasonic-buzzer": ["04-ultrasonic-hy-srf05", "05-buzzer-5v"],
+  "05-ldr-led": ["06-led-5mm", "09-ldr"],
+  "06-dht11-lcd": ["03-lcd-1602-i2c", "10-dht11"],
+  "07-rain-servo-buzzer": ["02-servo-sg90", "05-buzzer-5v", "13-rain-sensor"],
+  "08-flame-buzzer-lcd": ["03-lcd-1602-i2c", "05-buzzer-5v", "15-flame-sensor"],
+  "09-mq2-buzzer-led": ["05-buzzer-5v", "06-led-5mm", "16-mq2-gas-asap"],
+  "10-sound-relay": ["14-sound-sensor", "18-relay-5v"],
+  "11-getaran-buzzer-led": ["05-buzzer-5v", "06-led-5mm", "17-sw420-getaran"],
+  "12-rfid-servo-buzzer": ["02-servo-sg90", "05-buzzer-5v", "08-rfid-rc522"],
+  "13-ds18b20-lcd": ["03-lcd-1602-i2c", "12-ds18b20"],
+  "lcd-with-ultrasonik-only": ["03-lcd-1602-i2c", "04-ultrasonic-hy-srf05"],
+};
 
 function slugify(value) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -83,6 +99,22 @@ async function sync() {
       readme,
       image,
       sketches,
+      relatedSketches: [],
+    });
+  }
+
+  const chaptersById = new Map(chapters.map((chapter) => [chapter.id, chapter]));
+  for (const project of chapters.filter((chapter) => chapter.number === "19")) {
+    const relatedChapterIds = [...new Set(Object.values(projectRelations).flat())];
+    project.relatedSketches = relatedChapterIds.flatMap((chapterId) => {
+      const relatedChapter = chaptersById.get(chapterId);
+      if (!relatedChapter) return [];
+      return relatedChapter.sketches.map((sketch) => ({
+        ...sketch,
+        id: `${project.id}-terkait-${sketch.id}`,
+        title: `${relatedChapter.title} · ${sketch.title}`,
+        sourceTitle: relatedChapter.title,
+      }));
     });
   }
 
