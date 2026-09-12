@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const webDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const sourceDir = path.resolve(webDir, "..");
+const sourceDir = webDir;
 const publicDir = path.join(webDir, "public", "assets");
 const dataDir = path.join(webDir, "data");
 const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
@@ -39,7 +39,7 @@ async function sync() {
   let sketchCount = 0;
 
   for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))) {
-    if (!entry.isDirectory() || !/^\d{2}_/.test(entry.name) || entry.name === "web") continue;
+    if (!entry.isDirectory() || !/^\d{2}_/.test(entry.name)) continue;
     const chapterPath = path.join(sourceDir, entry.name);
     const number = Number(entry.name.slice(0, 2));
     const chapterSlug = slugify(entry.name);

@@ -18,3 +18,24 @@ Setiap folder komponen berisi beberapa sketch latihan. Buka satu subfolder conto
 - Jika LCD hanya menampilkan kotak, atur trimpot kontras di belakang modul.
 - Jika servo bergerak tidak stabil, gunakan catu daya 5V eksternal dan satukan GND eksternal dengan GND Arduino.
 - Untuk Arduino IDE, setiap sketch sebaiknya dibuka dari foldernya sendiri.
+
+## Portal web
+
+Folder root juga merupakan aplikasi Next.js untuk portal materi Robotika.
+
+### Jalankan lokal
+
+```bash
+npm install
+npm run dev
+```
+
+Buka `http://localhost:3000`.
+
+### Deploy ke Vercel
+
+Import repository ini di Vercel dan gunakan pengaturan default Next.js. Root Directory harus dibiarkan kosong karena konfigurasi web sekarang berada di root repository.
+
+Build lokal dapat dicek dengan `npm run lint` dan `npm run build`.
+
+Script `scripts/sync-materials.mjs` membaca seluruh folder bab Arduino, lalu menyalin gambar dan sketch ke `public/assets` serta membuat `data/materials.json`. Script ini otomatis dijalankan sebelum `npm run dev` dan `npm run build`.
